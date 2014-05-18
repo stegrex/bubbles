@@ -1,24 +1,22 @@
-2012-09-13
+2012-09-14
 
-Not much different from before, but I made some modifications so that
-bubbles can now be created.
+Added interaction between bubble and block.
 
-Class: MouseInput
-- Handles all of the mouse inputs.
-- Instantiated at GameLoop and propagates through Render, into class
-Render's static instance of the View (since JPanel uses the listener
-and View is the JPanel in this case).
-- On mouse button release, calls the Game class for its createBubble() method.
+Changes:
 
 Class: Game
-- Added method createBubble(). The method adds an instance of a Bubble
-into the bubbles1 array (I haven't yet coded destructors so once 50
-bubbles have been created, the array will be full).
+- Added some new code in the calculate() method that iterates through
+all the bubbles in the bubble pool and all the blocks in the block
+pool and does a calculation + update where necessary.
 
 Class: Calculate
-- Added method calculateBubble() that calculates the new position of
-any bubble and updates the object, per game frame.
+- Added new interaction method calculateBubbleBlock() that calculates
+the contextual interaction between bubble and block.
+- If it finds that the bubble is within the x and y parameters of
+touching the block, will return a boolean to the Game.calculate()
+method which breaks out of updating the bubble movement.
+- As you can see, the Calculate class will hold methods for
+calculating every possible combination of objects. The contextual
+relationships are defined here.
 
-Class: Render
-- Added method renderBubble() that pushes the GeneralPath into the
-view to be processed and drawn per frame.
+The collision rendering is incorrect, but I'll fix that later.

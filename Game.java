@@ -56,7 +56,22 @@ class Game
 		{
 			if (bubbles1[i] != null)
 			{
-				Calculate.calculateBubble(bubbles1[i]);
+				boolean updated = false;
+				for (int n = 0; n < blocks.length; n++)
+				{
+					if (blocks[n] != null)
+					{
+						updated = Calculate.calculateBubbleBlock(bubbles1[i], blocks[n]);
+						if (updated == true)
+						{
+							break;
+						}
+					}
+				}
+				if (updated == false)
+				{
+					Calculate.calculateBubble(bubbles1[i]);
+				}
 			}
 		}
 		
