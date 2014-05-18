@@ -1,21 +1,32 @@
-2012-09-18b
+2012-09-23
+
+Mainly added some changes to how the classes are handled and how the
+rendering is handled.
 
 Changes:
 
-Game:
-- Added rendering of levers.
+Class: GameLoop
+- Moved the Render object into the Game class.
+- Changed most static instances into dynamic instances.
+- Added Game.delta field for smoother renders.
 
-Calculate:
-- Added way to calculate levers with bubbles.
+Class: Game
+- Added instance of the Render.
+- Changed most static instances into dynamic instances (main reason is
+to not have as many "global" objects, to enforce accessing objects in
+the best class).
 
-Lever:
-- Added Lever class.
+Class: Calculate
+- Added the Game.delta value to any calculation that has to do with
+rate (distances).
+- The delta value is calculated in the GameLoop to figure out any
+timer disparities (since the Java timer is not guaranteed).
+- The delta value, when factored into calculations, will place the
+position of any object's movement in the correct position relative to
+real time (as opposed to game frame time, like before).
+- The delta value reduces jerky movement in rendering when the game's
+FPS changes (since the value ties the calculation of position relative
+to real time, and not FPS).
 
-Render:
-- Added rendering for levers.
-
-View:
-- Used rotation transformations on levers (not what I expected but it
-could be a new game mechanic).
-
-Notes: The lever rotation by itself is not what's supposed to happen.
+Class: View
+- Added antialiasing for rendering.

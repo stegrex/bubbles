@@ -5,28 +5,30 @@ class GameLoop
 {
 	
 	// Game
-	// Render
 	// MouseInput
 	
 	// GameLoop holds:
 		// The main timer
-		// The frontend
 		// The input interface
 		// Methods to call the game's Object Pool
 	
-	public boolean gameRunning;
+	public Game game;
+	public MouseInput mouseInput;
 	
-	public Render render;
-	public static MouseInput mouseInput;
+	public boolean gameRunning;
 	
 	public GameLoop ()
 	{
-		Game.load();
-		Game.dumpGameState(); // Debug
-		
-		this.render = new Render();
+		this.game = new Game();
+		this.game.dumpGameState(); // Debug
 		this.mouseInput = new MouseInput();
-		this.render.addMouseInput(mouseInput);
+		this.game.addMouseInput(mouseInput);
+		this.gameRunning = true;
+	}
+	
+	public void addMouseInput (MouseInput mouseInput)
+	{
+		this.game.addMouseInput(mouseInput);
 	}
 	
 	public void loop ()
@@ -44,6 +46,7 @@ class GameLoop
 			
 			double delta = updateLength/(double)timePerRender;
 			
+			this.setDelta(delta);
 			this.calculate(delta);
 			
 			calcCount++;
@@ -64,22 +67,20 @@ class GameLoop
 		}
 	}
 	
-	public static void handleMouseClicked (int x, int y)
+	private void setDelta (double delta)
 	{
-		//System.out.println(x+"::"+y); // Debug
-		Game.dumpGameState(); // Debug
-		Game.createBubble(x, y);
+		this.game.delta = delta;
 	}
 	
 	private void calculate (double delta)
 	{
 		// Calculate the states of all the objects in the object pool.
-		Game.calculate();
+		this.game.calculate();
 	}
 	
 	private void render (double delta)
 	{
-		Game.render();
+		this.game.render();
 		//System.out.println(delta);
 	}
 	

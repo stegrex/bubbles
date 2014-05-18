@@ -5,11 +5,16 @@ class Game
 	// Render
 	
 	// Game Component Objects
+	// Game Delta
 	
 	// Game holds:
 		// Object Pool
 		// Loading methods
 		// Control over object state changes
+		// Current game delta value
+	
+	public Calculate calculate;
+	public Render render;
 	
 	public static Block[] blocks = new Block[50];
 	public static Bubble[] bubbles1 = new Bubble[50];
@@ -17,12 +22,16 @@ class Game
 	public static Bubble[] asplodeBubbles = new Bubble[50];
 	public static Lever[] levers = new Lever[50];
 	
+	public static double delta = 0;
+	
 	public Game ()
 	{
-		Game.load();
+		this.calculate = new Calculate();
+		this.render = new Render();
+		this.load();
 	}
 	
-	public static void load ()
+	public void load ()
 	{
 		// Create level by positioning elements, based on level index
 		Game.blocks[0] = new Block(200, 200, 100, 10);
@@ -30,64 +39,75 @@ class Game
 		Game.levers[0] = new Lever(200, 300, 50, 5, 15);
 	}
 	
-	public static void checkBubblePool () // Revisit. Destruction loop already written in main calculate.
+	public void addMouseInput (MouseInput mouseInput)
+	{
+		this.render.addMouseInput(mouseInput);
+	}
+	
+	public static void handleMouseClick (int x, int y)
+	{
+		Game.createBubble(x, y);
+		//Game.dumpGameState(); // Debug
+	}
+	
+	public void checkBubblePool () // Revisit. Destruction loop already written in main calculate.
 	{
 	}
 	
 	public static void createBubble (int x, int y)
 	{
 		// Create bubble object and add to bubble object pool.
-		for (int i = 0; i < bubbles1.length; i++)
+		for (int i = 0; i < Game.bubbles1.length; i++)
 		{
-			if (bubbles1[i] == null)
+			if (Game.bubbles1[i] == null)
 			{
-				bubbles1[i] = new Bubble(x, y);
+				Game.bubbles1[i] = new Bubble(x, y);
 				break;
 			}
 		}
 	}
 	
-	public static void createAsplodeBubble (Bubble bubble)
+	public void createAsplodeBubble (Bubble bubble)
 	{
 		// Create bubble object and add to bubble object pool.
-		for (int i = 0; i < asplodeBubbles.length; i++)
+		for (int i = 0; i < Game.asplodeBubbles.length; i++)
 		{
-			if (asplodeBubbles[i] == null)
+			if (Game.asplodeBubbles[i] == null)
 			{
-				asplodeBubbles[i] = bubble;
+				Game.asplodeBubbles[i] = bubble;
 				break;
 			}
 		}
 	}
 	
-	public static void calculate ()
+	public void calculate ()
 	{
 		// Iterate through the object pool and call the correct interact context between object types.
 		
 		// Iterate through bubbles object pool.
-		for (int i = 0; i < bubbles1.length; i++)
+		for (int i = 0; i < Game.bubbles1.length; i++)
 		{
-			if (bubbles1[i] != null)
+			if (Game.bubbles1[i] != null)
 			{
 				boolean updated = false;
 				// Calculate bubble - bubble.
-				for (int i2 = 0; i2 < bubbles1.length; i2++)
+				for (int i2 = 0; i2 < Game.bubbles1.length; i2++)
 				{
-					if (bubbles1[i2] != null && bubbles1[i] != bubbles1[i2])
+					if (Game.bubbles1[i2] != null && Game.bubbles1[i] != Game.bubbles1[i2])
 					{
-						if (Calculate.calculateBubbleBubble(bubbles1[i], bubbles1[i2]) == true)
+						if (this.calculate.calculateBubbleBubble(Game.bubbles1[i], Game.bubbles1[i2]) == true)
 						{
 							updated = true;
-							bubbles1[i2] = null;
+							Game.bubbles1[i2] = null;
 						}
 					}
 				}
 				// Calculate bubble - block.
-				for (int n = 0; n < blocks.length; n++)
+				for (int n = 0; n < Game.blocks.length; n++)
 				{
-					if (blocks[n] != null)
+					if (this.blocks[n] != null)
 					{
-						updated = Calculate.calculateBubbleBlock(bubbles1[i], blocks[n]);
+						updated = this.calculate.calculateBubbleBlock(Game.bubbles1[i], Game.blocks[n]);
 						if (updated == true)
 						{
 							break;
@@ -96,89 +116,89 @@ class Game
 				}
 				
 				// Calculate asplode buddle.
-				if (Calculate.calculateBubbleDestruct(bubbles1[i]) == true)
+				if (this.calculate.calculateBubbleDestruct(Game.bubbles1[i]) == true)
 				{
-					Game.createAsplodeBubble(bubbles1[i]);
-					bubbles1[i] = null;
+					this.createAsplodeBubble(Game.bubbles1[i]);
+					Game.bubbles1[i] = null;
 				}
 				// Calculate bubble if no other updates.
 				else if (updated == false)
 				{
-					Calculate.calculateBubble(bubbles1[i]);
+					this.calculate.calculateBubble(Game.bubbles1[i]);
 				}
 			}
 		}
 		
 		// Iterate through Asplode bubbles pool.
-		for (int i = 0; i < asplodeBubbles.length; i++)
+		for (int i = 0; i < Game.asplodeBubbles.length; i++)
 		{
-			if (asplodeBubbles[i] != null)
+			if (this.asplodeBubbles[i] != null)
 			{
-				Calculate.calculateAsplodeBubble(asplodeBubbles[i]);
-				if (asplodeBubbles[i].destroy == true)
+				this.calculate.calculateAsplodeBubble(Game.asplodeBubbles[i]);
+				if (Game.asplodeBubbles[i].destroy == true)
 				{
-					asplodeBubbles[i] = null;
+					Game.asplodeBubbles[i] = null;
 				}
 			}
 		}
 	}
 	
-	public static void render ()
+	public void render ()
 	{
 		// Iterate through object pool and call the correct render method.
 		
 		// Clear the view.
-		Render.clear();
+		this.render.clear();
 		
 		// Blocks
-		for (int i = 0; i < blocks.length; i++)
+		for (int i = 0; i < Game.blocks.length; i++)
 		{
-			if (blocks[i] != null)
+			if (Game.blocks[i] != null)
 			{
-				Render.renderBlock(blocks[i]);
+				this.render.renderBlock(Game.blocks[i]);
 			}
 		}
 		
 		// Bubbles
-		for (int i = 0; i < bubbles1.length; i++)
+		for (int i = 0; i < Game.bubbles1.length; i++)
 		{
-			if (bubbles1[i] != null)
+			if (Game.bubbles1[i] != null)
 			{
-				Render.renderBubble(bubbles1[i]);
+				this.render.renderBubble(Game.bubbles1[i]);
 			}
 		}
 		
 		// Asplode Bubbles
-		for (int i = 0; i < asplodeBubbles.length; i++)
+		for (int i = 0; i < Game.asplodeBubbles.length; i++)
 		{
-			if (asplodeBubbles[i] != null)
+			if (Game.asplodeBubbles[i] != null)
 			{
-				Render.renderAsplodeBubble(asplodeBubbles[i]);
+				this.render.renderAsplodeBubble(Game.asplodeBubbles[i]);
 			}
 		}
 		
 		// Levers
-		for (int i = 0; i < levers.length; i++)
+		for (int i = 0; i < Game.levers.length; i++)
 		{
-			if (levers[i] != null)
+			if (Game.levers[i] != null)
 			{
-				Render.renderLever(levers[i]);
+				this.render.renderLever(Game.levers[i]);
 			}
 		}
 		
-		Render.redraw();
+		this.render.redraw();
 	}
 	
 	// Debug
 	public static void dumpGameState ()
 	{
 		int numBubbles = 0;
-		for (int x = 0; x < bubbles1.length; x++)
+		for (int x = 0; x < Game.bubbles1.length; x++)
 		{
-			if (bubbles1[x] != null)
+			if (Game.bubbles1[x] != null)
 			{
 				numBubbles++;
-				bubbles1[x].dumpObject();
+				Game.bubbles1[x].dumpObject();
 			}
 		}
 		System.out.println(numBubbles);

@@ -4,8 +4,7 @@ class Calculate
 	// Calculate holds:
 		// Static methods that provide object-to-object state calculation
 	
-	//public static Block calculateBlock (Block block)
-	public static void calculateBlock (Block block)
+	public void calculateBlock (Block block)
 	{
 		//block.y -= 1;
 		//return block;
@@ -16,14 +15,14 @@ class Calculate
 		return Math.sqrt(Math.pow(Settings.bubbleRadius, 2)*bubble.weight);
 	}
 	
-	public static void calculateBubble (Bubble bubble)
+	public void calculateBubble (Bubble bubble)
 	{
 		bubble.r = Calculate.calculateBubbleRadius(bubble);
-		bubble.y = bubble.y-Settings.bubbleSpeed;
+		bubble.y = bubble.y-Settings.bubbleSpeed*Game.delta;
 		bubble.moving = true;
 	}
 	
-	public static boolean calculateBubbleBubble (Bubble bubble1, Bubble bubble2)
+	public boolean calculateBubbleBubble (Bubble bubble1, Bubble bubble2)
 	{
 		bubble1.r = Calculate.calculateBubbleRadius(bubble1);
 		bubble2.r = Calculate.calculateBubbleRadius(bubble2);
@@ -39,9 +38,9 @@ class Calculate
 		return false;
 	}
 	
-	public static boolean calculateBubbleDestruct (Bubble bubble)
+	public boolean calculateBubbleDestruct (Bubble bubble)
 	{
-		// Redo
+		// Redo: Add random destruction points.
 		//if (this.y <= (10+Math.random()*30) || (maxBubbleWeight >= 1 && this.weight >= maxBubbleWeight)) // Asplode the bubble if it's too big, or is leaving the play area.
 		if (bubble.y <= 10 || (Settings.maxBubbleWeight >= 1 && bubble.weight >= Settings.maxBubbleWeight)) // Asplode the bubble if it's too big, or is leaving the play area.
 		{
@@ -51,27 +50,13 @@ class Calculate
 		return false;
 	}
 	
-	public static boolean calculateAsplodeBubble (Bubble bubble)
+	public boolean calculateAsplodeBubble (Bubble bubble)
 	{
 		if (bubble.r >= bubble.rStart/15)
 		{
 			bubble.d += 2.2;
 			bubble.r -= bubble.rStart/Settings.asplodeBubbleRate;
-			bubble.y -= bubble.rStart/Settings.asplodeBubbleRate;
-			/*
-			canvas.ctx.beginPath();
-			canvas.ctx.strokeStyle = "LightSkyBlue";
-			canvas.ctx.arc(this.x+Math.sqrt(this.r)-2*Math.random()*Math.sqrt(this.r), this.y, this.r, 1.5*Math.PI-this.d-Math.random()*1, 1.5*Math.PI+this.d+Math.random()*1, true);
-			canvas.ctx.stroke();
-			canvas.ctx.beginPath();
-			canvas.ctx.strokeStyle = "PowderBlue";
-			canvas.ctx.arc(this.x, this.y, (this.r-3 >= 0 ? this.r-3 : 0), 1.5*Math.PI-this.d, 1.5*Math.PI+this.d, true);
-			canvas.ctx.stroke();
-			canvas.ctx.beginPath();
-			canvas.ctx.strokeStyle = "White";
-			canvas.ctx.arc(this.x, this.y, this.r, 1.5*Math.PI+this.d, 1.5*Math.PI-this.d, true);
-			canvas.ctx.stroke();
-			*/
+			bubble.y -= bubble.rStart/(Settings.asplodeBubbleRate*Game.delta);
 		}
 		else // Destruct the bubble once it is too small.
 		{
@@ -80,10 +65,10 @@ class Calculate
 		return true;
 	}
 	
-	public static boolean calculateBubbleBlock (Bubble bubble, Block block)
+	public boolean calculateBubbleBlock (Bubble bubble, Block block)
 	{
 		bubble.r = Calculate.calculateBubbleRadius(bubble);
-		if ((bubble.x >= block.x && bubble.x <= block.x+block.w) && (bubble.y >= block.y+block.h+bubble.r && bubble.y <= block.y+block.h+bubble.r+Settings.bubbleSpeed))
+		if ((bubble.x >= block.x && bubble.x <= block.x+block.w) && (bubble.y >= block.y+block.h+bubble.r && bubble.y <= block.y+block.h+bubble.r+Settings.bubbleSpeed*Game.delta))
 		{
 			bubble.y = block.y+block.h+bubble.r;
 			bubble.moving = false;
@@ -92,7 +77,7 @@ class Calculate
 		return false;
 	}
 	
-	public static void calculateBubbleLever (Bubble bubble, Lever lever)
+	public void calculateBubbleLever (Bubble bubble, Lever lever)
 	{
 		bubble.r = Calculate.calculateBubbleRadius(bubble);
 		if ((bubble.x >= lever.x && bubble.x <= lever.x+lever.w/2) && (bubble.y >= lever.y+lever.h+bubble.r && bubble.y <= lever.y+lever.h+bubble.r+2))

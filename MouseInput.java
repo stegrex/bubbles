@@ -3,6 +3,14 @@ import java.awt.event.MouseListener;
 
 class MouseInput implements MouseListener
 {
+	
+	public UserInput userInput;
+	
+	//public MouseInput (String inputType)
+	//{
+		//this.userInput = new UserInput(inputType);
+	//}
+	
 	public void mouseClicked (MouseEvent e)
 	{
 	}
@@ -11,7 +19,7 @@ class MouseInput implements MouseListener
 	}
 	public void mouseReleased (MouseEvent e)
 	{
-		GameLoop.handleMouseClicked(e.getX(), e.getY());
+		Game.handleMouseClick(e.getX(), e.getY());
 	}
 	public void mouseEntered (MouseEvent e)
 	{

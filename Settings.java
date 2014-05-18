@@ -1,6 +1,7 @@
 
 class Settings
 {
+	public static int msPerRender = 4; // Milliseconds per animation rendering.
 	public static int gameMode = 1;
 	public static int autoShoot = 0; // Shoots a bunch of bubbles randomly if set to 1. Default 0.
 	public static double bubbleWeight = 1; // Bubble size. Default 1.
@@ -12,6 +13,5 @@ class Settings
 	public static int combineBubbleMode = 0;
 	public static int canvasX = 320;
 	public static int canvasY = 480;
-	public static int msPerRender = 4; // Milliseconds per animation rendering.
 	public static int asplodeBubbleRate = 150; // Part of the original radius that gets subtracted every frame. Default 150.
 }

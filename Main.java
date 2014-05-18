@@ -11,8 +11,10 @@ class Main
 	public static void main (String args[])
 	{
 		Main.gameLoop = new GameLoop();
-		gameLoop.gameRunning = true;
-		gameLoop.loop();
+		if (gameLoop.gameRunning == true)
+		{
+			gameLoop.loop();
+		}
 	}
 	
 }

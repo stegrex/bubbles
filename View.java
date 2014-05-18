@@ -6,6 +6,7 @@ import java.awt.geom.GeneralPath;
 	//import java.awt.geom.Arc2D;
 	import java.awt.Rectangle;
 import java.awt.Color;
+import java.awt.RenderingHints;
 
 class View extends JPanel
 {
@@ -21,6 +22,8 @@ class View extends JPanel
 	public Graphics g;
 	public Graphics2D g2d;
 	
+	public boolean antialias;
+	
 	public void clear ()
 	{
 		this.blocksPath = new GeneralPath();
@@ -35,6 +38,9 @@ class View extends JPanel
 	{
 		this.g = g;
 		this.g2d = (Graphics2D) g;
+		this.g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		this.g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		
 		//Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g);
 		this.setBackground(Color.BLACK); // Setting background color.
@@ -51,7 +57,7 @@ class View extends JPanel
 		this.g2d.draw(this.asplodeBubblesPath3); // Draws the bubbles.
 		
 		//leverTransform.translate(200, 300);
-		this.leverTransform.rotate(Math.PI/10, 150, 300);
+		this.leverTransform.rotate(Math.PI/50, 150, 300);
 		this.g2d.setPaint(Color.WHITE);
 		this.g2d.transform(leverTransform);
 		this.g2d.draw(this.leversPath); // Draws the bubbles.
