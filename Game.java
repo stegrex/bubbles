@@ -23,43 +23,90 @@ class Game
 	public static Portal[] portals = new Portal[20];
 	public static Block[] blocks = new Block[20];
 	public static SlopedBlock[] slopedBlocks = new SlopedBlock[20];
-	public static Bubble[] bubbles1 = new Bubble[100];
+	public static Bubble[] bubbles1 = new Bubble[50];
 	public static Bubble[] bubbles2 = new Bubble[50]; // Revisit. Is a second bubble object pool necessary?
 	public static Bubble[] asplodeBubbles = new Bubble[50];
 	public static Lever[] levers = new Lever[20];
 	
 	public static Random random = new Random();
 	
+	public GameLevel gameLevel; // Implement.
+	
+	public long initializeTime;
+	public boolean splashDemoLoaded = false;
+	
+	public double defaultBubbleSpeed;
+	
 	//public static double delta = 0; // Delta value for multiplication to every distance calculation per game frame.
 	
 	public Game ()
 	{
+		this.gameLevel = new GameLevel();
 		this.calculate = new Calculate();
-		this.load();
 		this.view = new View();
+		this.initializeTime = System.currentTimeMillis();
+		this.runSplashDemo();
 	}
 	
-	public void load ()
+	public void runSplashDemo ()
 	{
-		// Create level by positioning elements, based on level index
-		Game.blocks[0] = new Block(200, 200, 100, 10);
-		Game.blocks[1] = new Block(50, 100, 50, 10);
-		//Game.slopedBlocks[0] = new SlopedBlock(150, 300, 250, 250, 0, 0); // Revisit. Last two params necessary?
-		//Game.slopedBlocks[1] = new SlopedBlock(75, 150, 150, 250, 0, 0); // Revisit. Last two params necessary?
-		
-		Game.slopedBlocks[0] = new SlopedBlock(150, 300, 250, 290, 0, 0); // Revisit. Last two params necessary?
-		Game.slopedBlocks[1] = new SlopedBlock(10, 200, 150, 250, 0, 0); // Revisit. Last two params necessary?
-		Game.slopedBlocks[2] = new SlopedBlock(0, 135, 125, 80, 0, 0);
-		Game.slopedBlocks[3] = new SlopedBlock(150, 200, 300, 300, 0, 0);
-		
-		Game.portals[0] = new Portal(140, 100, 20, 200, 180, 20);
-		
-		
-		//Game.levers[0] = new Lever(200, 300, 50, 5, 15);
-		//Game.levers[0].angle = 45; // Debug.
-		
-		//Game.levers[1] = new Lever(100, 200, 50, 5, 15);
-		//Game.levers[1].angle = 0; // Debug.
+		if (this.splashDemoLoaded == false)
+		{
+			this.defaultBubbleSpeed = Settings.bubbleSpeed;
+			Settings.bubbleSpeed = 0.15;
+			this.load(0);
+			this.splashDemoLoaded = true;
+		}
+		if (System.currentTimeMillis() >= this.initializeTime+10000)
+		{
+			Settings.bubbleSpeed = this.defaultBubbleSpeed;
+			this.splashDemoLoaded = false;
+			this.initializeTime = 0;
+			this.unload();
+			this.load(1);
+		}
+	}
+	
+	public void load (int levelNumber)
+	{
+		if (this.gameLevel == null)
+		{
+			this.gameLevel = new GameLevel();
+		}
+		System.out.println("Level"+levelNumber); // Debug
+		this.gameLevel.load(levelNumber);
+	}
+	
+	public void unload ()
+	{
+		for (int x = 0; x < Game.portals.length; x++)
+		{
+			Game.portals[x] = null;
+		}
+		for (int x = 0; x < Game.blocks.length; x++)
+		{
+			Game.blocks[x] = null;
+		}
+		for (int x = 0; x < Game.slopedBlocks.length; x++)
+		{
+			Game.slopedBlocks[x] = null;
+		}
+		for (int x = 0; x < Game.bubbles1.length; x++)
+		{
+			Game.bubbles1[x] = null;
+		}
+		for (int x = 0; x < Game.bubbles2.length; x++)
+		{
+			Game.bubbles2[x] = null;
+		}
+		for (int x = 0; x < Game.asplodeBubbles.length; x++)
+		{
+			Game.asplodeBubbles[x] = null;
+		}
+		for (int x = 0; x < Game.levers.length; x++)
+		{
+			Game.levers[x] = null;
+		}
 	}
 	
 	public void addMouseInput (MouseInput mouseInput)
@@ -108,10 +155,19 @@ class Game
 		}
 	}
 	
-	public void calculate (double delta)
+	public void calculate (double delta, double lastDelta)
 	{
+		
+		// Checking whether the Splash Demo should be run.
+		if (this.splashDemoLoaded == true)
+		{
+			this.runSplashDemo();
+		}
+		
+		//Game.dumpGameState(); // Debug
 		// Iterate through the object pool and call the correct interact context between object types.
 		this.calculate.setDelta(delta);
+		this.calculate.setLastDelta(lastDelta);
 		// Iterate through bubbles object pool.
 		for (int i = 0; i < Game.bubbles1.length; i++)
 		{
@@ -131,18 +187,6 @@ class Game
 						}
 					}
 				}
-				// Calculate bubble - portal.
-				for (int n = 0; n < Game.portals.length; n++)
-				{
-					if (this.portals[n] != null)
-					{
-						updated = this.calculate.calculateBubblePortal(Game.bubbles1[i], Game.portals[n]);
-						if (updated == true)
-						{
-							break;
-						}
-					}
-				}
 				// Calculate bubble - block.
 				for (int n = 0; n < Game.blocks.length; n++)
 				{
@@ -155,7 +199,21 @@ class Game
 						}
 					}
 				}
-				///*
+				// Calculate bubble - portal.
+				if (updated == false)
+				{
+					for (int n = 0; n < Game.portals.length; n++)
+					{
+						if (this.portals[n] != null)
+						{
+							updated = this.calculate.calculateBubblePortal(Game.bubbles1[i], Game.portals[n]);
+							if (updated == true)
+							{
+								break;
+							}
+						}
+					}
+				}
 				// Calculate bubble - sloped block.
 				if (updated == false)
 				{
@@ -171,7 +229,7 @@ class Game
 						}
 					}
 				}
-				//*/
+				
 				// Calculate asplode buddle.
 				if (this.calculate.calculateBubbleDestruct(Game.bubbles1[i]) == true)
 				{

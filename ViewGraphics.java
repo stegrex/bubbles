@@ -39,23 +39,6 @@ class ViewGraphics extends JPanel
 	
 	public boolean antialias;
 	
-	/*
-	public void clear () // Redo. Unnecessary.
-	{
-		for (int x = 0 ; x < this.paths.length; x++) // Redo. Can recycle the paths array in the main paintComponent method.
-		{
-			this.paths[x] = null;
-		}
-		
-		this.blocksPath = new GeneralPath();
-		this.bubblesPath = new GeneralPath();
-		this.asplodeBubblesPath1 = new GeneralPath();
-		this.asplodeBubblesPath2 = new GeneralPath();
-		this.asplodeBubblesPath3 = new GeneralPath();
-		this.leversPath = new GeneralPath();
-	}
-	*/
-	
 	public void paintComponent (Graphics g)
 	{
 		this.g = g;

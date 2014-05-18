@@ -17,12 +17,14 @@ class GameLoop
 	public Game game;
 	public MouseInput mouseInput;
 	
+	double lastDelta = 0;
+	
 	public boolean gameRunning;
 	
 	public GameLoop ()
 	{
 		this.game = new Game();
-		this.game.dumpGameState(); // Debug
+		//this.game.dumpGameState(); // Debug
 		this.mouseInput = new MouseInput();
 		this.game.addMouseInput(mouseInput);
 		this.gameRunning = true;
@@ -46,6 +48,7 @@ class GameLoop
 			long updateLength = now - lastLoopTime;
 			lastLoopTime = now;
 			
+			double lastDelta = this.lastDelta;
 			double delta = updateLength/(double)timePerRender;
 			
 			if (Settings.autoShoot == 1)
@@ -56,9 +59,8 @@ class GameLoop
 				}
 			}
 			
-			//this.setDelta(delta);
-			this.calculate(delta);
-			
+			this.lastDelta = delta;
+			this.calculate(delta, lastDelta);
 			calcCount++;
 			if (calcCount == Settings.msPerRender)
 			{
@@ -80,18 +82,10 @@ class GameLoop
 		}
 	}
 	
-	/*
-	private void setDelta (double delta) // Revisit. Unnecesary.
-	{
-		this.game.delta = delta;
-		//this.game.delta = 1; // Debug.
-	}
-	*/
-	
-	private void calculate (double delta)
+	private void calculate (double delta, double lastDelta) // Revisit. Variable lastDelta might not be needed.
 	{
 		// Calculate the states of all the objects in the object pool.
-		this.game.calculate(delta);
+		this.game.calculate(delta, lastDelta);
 	}
 	
 	private void render (double delta)

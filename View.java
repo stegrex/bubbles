@@ -41,13 +41,6 @@ class View
 		this.viewGraphics.repaint();
 	}
 	
-	/*
-	public void clear ()
-	{
-		this.viewGraphics.clear();
-	}
-	*/
-	
 	// Render pool set methods.
 	public void setPortals (Portal[] portals)
 	{
@@ -77,42 +70,5 @@ class View
 	{
 		this.viewGraphics.levers = levers;
 	}
-	
-	/*
-	// For each render method, pass in objects, and set the correct paths.
-	public void renderBlock (Block block)
-	{
-		// Look at GeneralPath method append()
-		this.viewGraphics.blocksPath.moveTo(block.x, block.y);
-		this.viewGraphics.blocksPath.lineTo(block.x+block.w, block.y);
-		this.viewGraphics.blocksPath.lineTo(block.x+block.w, block.y+block.h);
-		this.viewGraphics.blocksPath.lineTo(block.x, block.y+block.h);
-		this.viewGraphics.blocksPath.lineTo(block.x, block.y);
-	}
-	
-	public void renderBubble (Bubble bubble) // Pass in different Object types to be rendered.
-	{
-		// Revisit. Add random x motion if bubble is moving.
-		//Shape bubbleShape = new Arc2D.Double();
-		this.viewGraphics.bubblesPath.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
-		this.viewGraphics.bubblesPath.append(new Arc2D.Double(bubble.x-bubble.r+0.25, bubble.y-bubble.r+0.25, bubble.r*2-0.5, bubble.r*2-0.5, 0, 360, Arc2D.OPEN), false); // Revisit. Making bubble line thicker.
-	}
-	
-	public void renderAsplodeBubble (Bubble bubble)
-	{
-		this.viewGraphics.asplodeBubblesPath1.append(new Arc2D.Double((bubble.r*2-6 >= 0 ? bubble.x-bubble.r+3 : bubble.x-bubble.r), (bubble.r*2-6 >= 0 ? bubble.y-bubble.r+3 : bubble.y-bubble.r), (bubble.r*2-6 >= 0 ? bubble.r*2-6 : 0), (bubble.r*2-6 >= 0 ? bubble.r*2-6 : 0), 90+bubble.d, 360-2*bubble.d, Arc2D.OPEN), false);
-		this.viewGraphics.asplodeBubblesPath2.append(new Arc2D.Double(bubble.x-bubble.r+Math.sqrt(bubble.r)*(1-2*this.random.nextDouble()), bubble.y-bubble.r, bubble.r*2, bubble.r*2, 90+bubble.d+this.random.nextDouble()*10, 360-2*bubble.d-this.random.nextDouble()*10, Arc2D.OPEN), false);
-		this.viewGraphics.asplodeBubblesPath3.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 90-bubble.d, 2*bubble.d, Arc2D.OPEN), false);
-	}
-	
-	public void renderLever (Lever lever)
-	{
-		this.viewGraphics.leversPath.moveTo(lever.x-lever.w/2, lever.y);
-		this.viewGraphics.leversPath.lineTo(lever.x+lever.w-lever.w/2, lever.y);
-		this.viewGraphics.leversPath.lineTo(lever.x+lever.w-lever.w/2, lever.y+lever.h);
-		this.viewGraphics.leversPath.lineTo(lever.x-lever.w/2, lever.y+lever.h);
-		this.viewGraphics.leversPath.lineTo(lever.x-lever.w/2, lever.y);
-	}
-	*/
 	
 }
