@@ -55,7 +55,7 @@ class Render
 	public static void renderBubble (Bubble bubble) // Pass in different Object types to be rendered.
 	{
 		//Shape bubbleShape = new Arc2D.Double();
-		Render.view.bubblesPath.append(new Arc2D.Double(bubble.x, bubble.y, bubble.r, bubble.r, 0, 360, Arc2D.OPEN), false);
+		Render.view.bubblesPath.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
 	}
 	
 	public static void renderBubbleAsplode (Bubble bubble)

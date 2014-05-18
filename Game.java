@@ -57,6 +57,17 @@ class Game
 			if (bubbles1[i] != null)
 			{
 				boolean updated = false;
+				for (int i2 = 0; i2 < bubbles1.length; i2++)
+				{
+					if (bubbles1[i2] != null && bubbles1[i] != bubbles1[i2])
+					{
+						if (Calculate.calculateBubbleBubble(bubbles1[i], bubbles1[i2]) == true)
+						{
+							updated = true;
+							bubbles1[i2] = null;
+						}
+					}
+				}
 				for (int n = 0; n < blocks.length; n++)
 				{
 					if (blocks[n] != null)
@@ -71,6 +82,10 @@ class Game
 				if (updated == false)
 				{
 					Calculate.calculateBubble(bubbles1[i]);
+				}
+				if (bubbles1[i].destroy == true)
+				{
+					bubbles1[i] = null;
 				}
 			}
 		}
@@ -106,11 +121,20 @@ class Game
 	// Debug
 	public static void dumpGameState ()
 	{
+		/*
 		for (int x = 0; x < blocks.length; x++)
 		{
 			if (blocks[x] != null)
 			{
 				blocks[x].dumpObject();
+			}
+		}
+		*/
+		for (int x = 0; x < bubbles1.length; x++)
+		{
+			if (bubbles1[x] != null)
+			{
+				bubbles1[x].dumpObject();
 			}
 		}
 	}

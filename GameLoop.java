@@ -20,7 +20,7 @@ class GameLoop
 	{
 		
 		Game.load();
-		Game.dumpGameState();
+		Game.dumpGameState(); // Debug
 		
 		this.render = new Render();
 		this.mouseInput = new MouseInput();
@@ -67,7 +67,8 @@ class GameLoop
 	
 	public static void handleMouseClicked (int x, int y)
 	{
-		System.out.println(x+"::"+y);
+		//System.out.println(x+"::"+y); // Debug
+		Game.dumpGameState(); // Debug
 		Game.createBubble(x, y);
 	}
 	

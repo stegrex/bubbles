@@ -4,18 +4,19 @@ class Bubble
 	public String type;
 	public int index;
 	public boolean isBlocked;
-	public int x;
-	public int y;
+	public double x;
+	public double y;
 	public double r;
-	public int weight;
+	public double weight;
 	public boolean moving;
 	public boolean asploding;
+	public boolean destroy;
 	
 	// Asplode Bubble
 	public double d;
 	public double rStart;
 	
-	public Bubble (int x, int y)
+	public Bubble (double x, double y)
 	{
 		this.type = "Bubble";
 		this.x = x;
@@ -38,7 +39,7 @@ class Bubble
 	
 	public void destruct ()
 	{
-		
+		this.destroy = true;
 	}
 	
 	public void dumpObject ()
