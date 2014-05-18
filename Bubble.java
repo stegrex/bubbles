@@ -33,7 +33,6 @@ class Bubble
 		this.r *= 2;
 		this.rStart = this.r;
 		this.y += this.r/4;
-		this.destruct();
 		this.asploding = true;
 	}
 	

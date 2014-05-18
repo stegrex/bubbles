@@ -1,19 +1,15 @@
-2012-09-16
-
-Added interaction between bubbles. Fixed some bugs.
+2012-09-18a
 
 Changes:
 
-Class: Calculate
-- Added new interaction method calculateBubbleBubble() that calculates
-the contextual interaction between bubble and bubble.
-- If it finds that the bubble is within the x and y parameters of
-touching any other bubble, will calculate the combination for a new
-bubble, and destroy the secondary bubble.
-- As you can see, the Calculate class will hold methods for
-calculating every possible combination of objects. The contextual
-relationships are defined here.
+Game:
+- Added new loop for handling Bubbles objects with the asploding property.
 
-Collision rendering fixed due to Arc2D taking the x and y inputs of
-the arc as the leftmost and topmost pixels, rather than the HTML5
-Canvas API which defines the x and y parameters as centers of circles.
+Calculate:
+- Added calculation methods between different bubble types.
+
+Render:
+- Added rendering for asploding Bubbles.
+
+View:
+- Added draw methods for asploding Bubbles.

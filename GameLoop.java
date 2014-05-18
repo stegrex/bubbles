@@ -5,10 +5,13 @@ class GameLoop
 {
 	
 	// Game
+	// Render
+	// MouseInput
 	
 	// GameLoop holds:
 		// The main timer
 		// The frontend
+		// The input interface
 		// Methods to call the game's Object Pool
 	
 	public boolean gameRunning;
@@ -18,7 +21,6 @@ class GameLoop
 	
 	public GameLoop ()
 	{
-		
 		Game.load();
 		Game.dumpGameState(); // Debug
 		
@@ -29,7 +31,6 @@ class GameLoop
 	
 	public void loop ()
 	{
-		
 		long lastLoopTime = System.nanoTime();
 		final int targetFPS = 300;
 		final long timePerRender = 1000000000/targetFPS;
@@ -47,7 +48,6 @@ class GameLoop
 			
 			calcCount++;
 			if (calcCount == Settings.msPerRender)
-			//if (calcCount == 1000)
 			{
 				this.render(delta);
 				calcCount = 0;
@@ -62,7 +62,6 @@ class GameLoop
 				this.loop();
 			}
 		}
-		
 	}
 	
 	public static void handleMouseClicked (int x, int y)
@@ -82,7 +81,6 @@ class GameLoop
 	{
 		Game.render();
 		//System.out.println(delta);
-		// Do the render to the display.
 	}
 	
 }

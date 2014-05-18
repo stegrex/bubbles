@@ -8,6 +8,7 @@ import java.awt.geom.GeneralPath;
 	import java.awt.Rectangle;
 import java.awt.Color;
 
+// This render version is specific to Swing.
 class Render
 {
 	
@@ -58,9 +59,9 @@ class Render
 		Render.view.bubblesPath.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
 	}
 	
-	public static void renderBubbleAsplode (Bubble bubble)
+	public static void renderAsplodeBubble (Bubble bubble)
 	{
-		
+		Render.view.asplodeBubblesPath1.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
 	}
 	
 }

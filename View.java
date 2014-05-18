@@ -11,6 +11,7 @@ class View extends JPanel
 	
 	public GeneralPath blocksPath = new GeneralPath();
 	public GeneralPath bubblesPath = new GeneralPath();
+	public GeneralPath asplodeBubblesPath1 = new GeneralPath();
 	
 	public Graphics g;
 	public Graphics2D g2d;
@@ -19,6 +20,7 @@ class View extends JPanel
 	{
 		this.blocksPath = new GeneralPath();
 		this.bubblesPath = new GeneralPath();
+		this.asplodeBubblesPath1 = new GeneralPath();
 	}
 	
 	public void paintComponent (Graphics g)
@@ -31,11 +33,10 @@ class View extends JPanel
 		
 		this.g2d.setPaint(Color.WHITE); // Sets the paint color.
 		this.g2d.draw(this.blocksPath); // Draws the cube.
+		this.g2d.setPaint(Color.CYAN);
 		this.g2d.draw(this.bubblesPath); // Draws the bubbles.
-		
-		//g2d.setPaint(Color.WHITE); // Sets the paint color.
-		//g2d.draw(this.blocksPath); // Draws the cube.
-		
+		this.g2d.setPaint(Color.LIGHT_GRAY);
+		this.g2d.draw(this.asplodeBubblesPath1); // Draws the bubbles.
 	}
 	
 }
