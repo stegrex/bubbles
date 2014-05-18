@@ -18,52 +18,15 @@ class Render
 	
 	public Render ()
 	{
-		/*
-		JFrame frame = new JFrame("Bubbles");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.view = new View();
-		frame.add(this.view);
-		frame.setSize(Settings.canvasX, Settings.canvasY);
-		frame.setVisible(true);
-		*/
-	}
-	/*
-	public void addMouseInput (MouseInput mouseInput)
-	{
-		this.view.addMouseListener(mouseInput);
+		
 	}
 	
-	public void redraw ()
-	{
-		this.view.repaint();
-	}
-	
-	public void clear ()
-	{
-		this.view.clear();
-	}
-	*/
 	// For each render method, pass in objects, and set the correct paths.
 	public GeneralPath renderPortal (Portal portal)
 	{
 		GeneralPath path = new GeneralPath();
-		/*
-		path.moveTo(portal.entranceX-portal.entranceW/2, portal.entranceY-portal.entranceW/4);
-		path.lineTo(portal.entranceX+portal.entranceW/2, portal.entranceY-portal.entranceW/4);
-		path.lineTo(portal.entranceX+portal.entranceW/2, portal.entranceY+portal.entranceW/4);
-		path.lineTo(portal.entranceX-portal.entranceW/2, portal.entranceY+portal.entranceW/4);
-		path.lineTo(portal.entranceX-portal.entranceW/2, portal.entranceY-portal.entranceW/4);
-		*/
 		path.append(new Arc2D.Double(portal.entranceX-portal.entranceW/2, portal.entranceY-portal.entranceW/2, portal.entranceW, portal.entranceW, 0, 180, Arc2D.OPEN), false);
-		/*
-		path.moveTo(portal.exitX-portal.exitW/2, portal.exitY-portal.exitW/4);
-		path.lineTo(portal.exitX+portal.exitW/2, portal.exitY-portal.exitW/4);
-		path.lineTo(portal.exitX+portal.exitW/2, portal.exitY+portal.exitW/4);
-		path.lineTo(portal.exitX-portal.exitW/2, portal.exitY+portal.exitW/4);
-		path.lineTo(portal.exitX-portal.exitW/2, portal.exitY-portal.exitW/4);
-		*/
 		path.append(new Arc2D.Double(portal.exitX-portal.exitW/2, portal.exitY-portal.exitW/2, portal.exitW, portal.exitW, 180, 180, Arc2D.OPEN), false);
-		
 		return path;
 	}
 	public GeneralPath renderBlock (Block block)
@@ -87,7 +50,7 @@ class Render
 		return path;
 	}
 	
-	public GeneralPath renderBubble (Bubble bubble) // Pass in different Object types to be rendered.
+	public GeneralPath renderBubble (Bubble bubble)
 	{
 		GeneralPath path = new GeneralPath();
 		path.append(new Arc2D.Double(bubble.x-bubble.r+(bubble.moving ? 1.5*Math.sqrt(bubble.r)*(0.5-this.random.nextDouble()) : 0), bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
@@ -119,6 +82,7 @@ class Render
 	
 	public GeneralPath renderLever (Lever lever)
 	{
+		// Redo. Look at GeneralPath method append()
 		GeneralPath path = new GeneralPath();
 		path.moveTo(lever.x-lever.w/2, lever.y);
 		path.lineTo(lever.x+lever.w-lever.w/2, lever.y);

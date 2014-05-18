@@ -21,7 +21,7 @@ class MouseInput implements MouseListener
 	}
 	public void mouseReleased (MouseEvent e)
 	{
-		Game.handleMouseClick(e.getX(), e.getY());
+		Main.handleMouseClick(e.getX(), e.getY());
 	}
 	public void mouseEntered (MouseEvent e)
 	{

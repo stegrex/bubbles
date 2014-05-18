@@ -1,8 +1,5 @@
 //package stegrex.bubbles.game;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 class GameLoop
 {
 	
@@ -11,11 +8,9 @@ class GameLoop
 	
 	// GameLoop holds:
 		// The main timer
-		// The input interface
 		// Methods to call the game's Object Pool
 	
 	public Game game;
-	public MouseInput mouseInput;
 	
 	double lastDelta = 0;
 	
@@ -25,14 +20,20 @@ class GameLoop
 	{
 		this.game = new Game();
 		//this.game.dumpGameState(); // Debug
-		this.mouseInput = new MouseInput();
-		this.game.addMouseInput(mouseInput);
 		this.gameRunning = true;
 	}
 	
 	public void addMouseInput (MouseInput mouseInput)
 	{
 		this.game.addMouseInput(mouseInput);
+	}
+	
+	public void handleMouseClick (int x, int y)
+	{
+		if (this.gameRunning == true)
+		{
+			this.game.handleMouseClick(x, y);
+		}
 	}
 	
 	public void loop ()
@@ -55,7 +56,7 @@ class GameLoop
 			{
 				for (int x = 0; x < 100; x++)
 				{
-					Game.createRandomBubble();
+					this.game.createRandomBubble();
 				}
 			}
 			

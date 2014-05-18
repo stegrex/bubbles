@@ -1,3 +1,12 @@
-2012-10-28
+2012-11-23
 
-Added a splash screen, began building a GameLevel class that can load/save levels.
+Refactored MouseInput instance.
+
+Class: Main, GameLoop, Game
+- Removed the MouseInput object from the Game class.
+- Moved the MouseInput object to the Main class, where it will handle all other user interactions.
+- Changed GameLoop class accordingly to handle interactions by passing them to the Game object.
+- Changed Game class handling to use dynamic instead of static properties and methods.
+
+Class: GameLevel
+- Changed monolithic load() method into smaller separate methods, each of which load the game pool of one particular object type. (This also prevents the circular reference of the static object pools in the Game class.)

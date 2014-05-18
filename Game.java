@@ -13,22 +13,22 @@ class Game
 	
 	// Game holds:
 		// Object Pool
-		// Loading methods
+		// Game loading methods
 		// Control over object state changes
 		// Current game delta value
 	
 	public Calculate calculate;
 	public View view;
 	
-	public static Portal[] portals = new Portal[20];
-	public static Block[] blocks = new Block[20];
-	public static SlopedBlock[] slopedBlocks = new SlopedBlock[20];
-	public static Bubble[] bubbles1 = new Bubble[50];
-	public static Bubble[] bubbles2 = new Bubble[50]; // Revisit. Is a second bubble object pool necessary?
-	public static Bubble[] asplodeBubbles = new Bubble[50];
-	public static Lever[] levers = new Lever[20];
+	public Portal[] portals = new Portal[20];
+	public Block[] blocks = new Block[20];
+	public SlopedBlock[] slopedBlocks = new SlopedBlock[20];
+	public Bubble[] bubbles1 = new Bubble[50];
+	public Bubble[] bubbles2 = new Bubble[50]; // Revisit. Is a second bubble object pool necessary?
+	public Bubble[] asplodeBubbles = new Bubble[50];
+	public Lever[] levers = new Lever[20];
 	
-	public static Random random = new Random();
+	public Random random = new Random();
 	
 	public GameLevel gameLevel; // Implement.
 	
@@ -74,38 +74,45 @@ class Game
 			this.gameLevel = new GameLevel();
 		}
 		System.out.println("Level"+levelNumber); // Debug
-		this.gameLevel.load(levelNumber);
+		this.gameLevel.setCurrentLevel(levelNumber);
+		this.gameLevel.loadPortals(this.portals);
+		this.gameLevel.loadBlocks(this.blocks);
+		this.gameLevel.loadSlopedBlocks(this.slopedBlocks);
+		this.gameLevel.loadBubbles1(this.bubbles1);
+		this.gameLevel.loadBubbles2(this.bubbles2);
+		this.gameLevel.loadAsplodeBubbles(this.asplodeBubbles);
+		this.gameLevel.loadLevers(this.levers);
 	}
 	
 	public void unload ()
 	{
-		for (int x = 0; x < Game.portals.length; x++)
+		for (int x = 0; x < this.portals.length; x++)
 		{
-			Game.portals[x] = null;
+			this.portals[x] = null;
 		}
-		for (int x = 0; x < Game.blocks.length; x++)
+		for (int x = 0; x < this.blocks.length; x++)
 		{
-			Game.blocks[x] = null;
+			this.blocks[x] = null;
 		}
-		for (int x = 0; x < Game.slopedBlocks.length; x++)
+		for (int x = 0; x < this.slopedBlocks.length; x++)
 		{
-			Game.slopedBlocks[x] = null;
+			this.slopedBlocks[x] = null;
 		}
-		for (int x = 0; x < Game.bubbles1.length; x++)
+		for (int x = 0; x < this.bubbles1.length; x++)
 		{
-			Game.bubbles1[x] = null;
+			this.bubbles1[x] = null;
 		}
-		for (int x = 0; x < Game.bubbles2.length; x++)
+		for (int x = 0; x < this.bubbles2.length; x++)
 		{
-			Game.bubbles2[x] = null;
+			this.bubbles2[x] = null;
 		}
-		for (int x = 0; x < Game.asplodeBubbles.length; x++)
+		for (int x = 0; x < this.asplodeBubbles.length; x++)
 		{
-			Game.asplodeBubbles[x] = null;
+			this.asplodeBubbles[x] = null;
 		}
-		for (int x = 0; x < Game.levers.length; x++)
+		for (int x = 0; x < this.levers.length; x++)
 		{
-			Game.levers[x] = null;
+			this.levers[x] = null;
 		}
 	}
 	
@@ -114,42 +121,42 @@ class Game
 		this.view.addMouseInput(mouseInput);
 	}
 	
-	public static void handleMouseClick (int x, int y)
+	public void handleMouseClick (int x, int y)
 	{
-		Game.createBubble(x, y);
-		//Game.dumpGameState(); // Debug
+		this.createBubble(x, y);
+		//this.dumpGameState(); // Debug
 	}
 	
 	public void checkBubblePool () // Revisit. Destruction loop already written in main calculate.
 	{
 	}
 	
-	public static void createBubble (int x, int y)
+	public void createBubble (int x, int y)
 	{
 		// Create bubble object and add to bubble object pool.
-		for (int i = 0; i < Game.bubbles1.length; i++)
+		for (int i = 0; i < this.bubbles1.length; i++)
 		{
-			if (Game.bubbles1[i] == null)
+			if (this.bubbles1[i] == null)
 			{
-				Game.bubbles1[i] = new Bubble(x, y);
+				this.bubbles1[i] = new Bubble(x, y);
 				break;
 			}
 		}
 	}
 	
-	public static void createRandomBubble ()
+	public void createRandomBubble ()
 	{
-		Game.createBubble(Game.random.nextInt(Settings.canvasX), Game.random.nextInt(Settings.canvasY));
+		this.createBubble(this.random.nextInt(Settings.canvasX), this.random.nextInt(Settings.canvasY));
 	}
 	
 	public void createAsplodeBubble (Bubble bubble)
 	{
 		// Create bubble object and add to bubble object pool.
-		for (int i = 0; i < Game.asplodeBubbles.length; i++)
+		for (int i = 0; i < this.asplodeBubbles.length; i++)
 		{
-			if (Game.asplodeBubbles[i] == null)
+			if (this.asplodeBubbles[i] == null)
 			{
-				Game.asplodeBubbles[i] = bubble;
+				this.asplodeBubbles[i] = bubble;
 				break;
 			}
 		}
@@ -164,35 +171,35 @@ class Game
 			this.runSplashDemo();
 		}
 		
-		//Game.dumpGameState(); // Debug
+		//this.dumpGameState(); // Debug
 		// Iterate through the object pool and call the correct interact context between object types.
 		this.calculate.setDelta(delta);
 		this.calculate.setLastDelta(lastDelta);
 		// Iterate through bubbles object pool.
-		for (int i = 0; i < Game.bubbles1.length; i++)
+		for (int i = 0; i < this.bubbles1.length; i++)
 		{
-			if (Game.bubbles1[i] != null)
+			if (this.bubbles1[i] != null)
 			{
 				boolean combined = false;
 				boolean updated = false;
 				// Calculate bubble - bubble.
-				for (int n = 0; n < Game.bubbles1.length; n++)
+				for (int n = 0; n < this.bubbles1.length; n++)
 				{
-					if (Game.bubbles1[n] != null && Game.bubbles1[i] != Game.bubbles1[n])
+					if (this.bubbles1[n] != null && this.bubbles1[i] != this.bubbles1[n])
 					{
-						combined = this.calculate.calculateBubbleBubble(Game.bubbles1[i], Game.bubbles1[n]);
+						combined = this.calculate.calculateBubbleBubble(this.bubbles1[i], this.bubbles1[n]);
 						if (combined == true)
 						{
-							Game.bubbles1[n] = null;
+							this.bubbles1[n] = null;
 						}
 					}
 				}
 				// Calculate bubble - block.
-				for (int n = 0; n < Game.blocks.length; n++)
+				for (int n = 0; n < this.blocks.length; n++)
 				{
 					if (this.blocks[n] != null)
 					{
-						updated = this.calculate.calculateBubbleBlock(Game.bubbles1[i], Game.blocks[n]);
+						updated = this.calculate.calculateBubbleBlock(this.bubbles1[i], this.blocks[n]);
 						if (updated == true)
 						{
 							break;
@@ -202,11 +209,11 @@ class Game
 				// Calculate bubble - portal.
 				if (updated == false)
 				{
-					for (int n = 0; n < Game.portals.length; n++)
+					for (int n = 0; n < this.portals.length; n++)
 					{
 						if (this.portals[n] != null)
 						{
-							updated = this.calculate.calculateBubblePortal(Game.bubbles1[i], Game.portals[n]);
+							updated = this.calculate.calculateBubblePortal(this.bubbles1[i], this.portals[n]);
 							if (updated == true)
 							{
 								break;
@@ -217,11 +224,11 @@ class Game
 				// Calculate bubble - sloped block.
 				if (updated == false)
 				{
-					for (int n = 0; n < Game.slopedBlocks.length; n++)
+					for (int n = 0; n < this.slopedBlocks.length; n++)
 					{
 						if (this.slopedBlocks[n] != null)
 						{
-							updated = this.calculate.calculateBubbleSlopedBlock(Game.bubbles1[i], Game.slopedBlocks[n]);
+							updated = this.calculate.calculateBubbleSlopedBlock(this.bubbles1[i], this.slopedBlocks[n]);
 							if (updated == true)
 							{
 								break;
@@ -231,28 +238,28 @@ class Game
 				}
 				
 				// Calculate asplode buddle.
-				if (this.calculate.calculateBubbleDestruct(Game.bubbles1[i]) == true)
+				if (this.calculate.calculateBubbleDestruct(this.bubbles1[i]) == true)
 				{
-					this.createAsplodeBubble(Game.bubbles1[i]);
-					Game.bubbles1[i] = null;
+					this.createAsplodeBubble(this.bubbles1[i]);
+					this.bubbles1[i] = null;
 				}
 				// Calculate bubble if no other updates.
 				else if (updated == false)
 				{
-					this.calculate.calculateBubble(Game.bubbles1[i]);
+					this.calculate.calculateBubble(this.bubbles1[i]);
 				}
 			}
 		}
 		
 		// Iterate through Asplode bubbles pool.
-		for (int i = 0; i < Game.asplodeBubbles.length; i++)
+		for (int i = 0; i < this.asplodeBubbles.length; i++)
 		{
 			if (this.asplodeBubbles[i] != null)
 			{
-				this.calculate.calculateAsplodeBubble(Game.asplodeBubbles[i]);
-				if (Game.asplodeBubbles[i].destroy == true)
+				this.calculate.calculateAsplodeBubble(this.asplodeBubbles[i]);
+				if (this.asplodeBubbles[i].destroy == true)
 				{
-					Game.asplodeBubbles[i] = null;
+					this.asplodeBubbles[i] = null;
 				}
 			}
 		}
@@ -275,15 +282,15 @@ class Game
 	}
 	
 	// Debug
-	public static void dumpGameState ()
+	public void dumpGameState ()
 	{
 		int numBubbles = 0;
-		for (int x = 0; x < Game.bubbles1.length; x++)
+		for (int x = 0; x < this.bubbles1.length; x++)
 		{
-			if (Game.bubbles1[x] != null)
+			if (this.bubbles1[x] != null)
 			{
 				numBubbles++;
-				Game.bubbles1[x].dumpObject();
+				this.bubbles1[x].dumpObject();
 			}
 		}
 		System.out.println(numBubbles);

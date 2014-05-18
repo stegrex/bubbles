@@ -46,9 +46,8 @@ class ViewGraphics extends JPanel
 		this.g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		this.g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
-		//Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g);
-		this.setBackground(Color.BLACK); // Setting background color.
+		this.setBackground(Color.BLACK); // Set background color.
 		
 		// Handle static objects that can be processed in a single pool.
 		this.g2d.setPaint(Color.RED);
