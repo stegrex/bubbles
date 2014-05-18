@@ -20,9 +20,21 @@ class Main
 		Main.gameLoop.loop();
 	}
 	
-	public static void handleMouseClick (int x, int y)
+	public static void handleMousePress (int x, int y)
 	{
-		Main.gameLoop.handleMouseClick(x, y);
+		Main.gameLoop.handleMousePress(x, y);
+	}
+	public static void handleMouseRightPress (int x, int y)
+	{
+		Main.gameLoop.handleMouseRightPress(x, y);
+	}
+	public static void handleMouseRelease (int x, int y)
+	{
+		Main.gameLoop.handleMouseRelease(x, y);
+	}
+	public static void handleMouseDrag (int x, int y)
+	{
+		Main.gameLoop.handleMouseDrag(x, y);
 	}
 	
 }

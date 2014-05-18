@@ -24,7 +24,7 @@ class Calculate
 		this.lastDelta = lastDelta;
 	}
 	
-	public void calculateBlock (Block block) // Revisit. Possibly unused (not useful unless possibly making a moving block?
+	public void calculateBlock (Block block) // Revisit. Possibly unused (not useful unless possibly making a moving block)?
 	{
 		//block.y -= 1;
 		//return block;
@@ -33,6 +33,39 @@ class Calculate
 	private double calculateBubbleRadius (Bubble bubble)
 	{
 		return Math.sqrt(Math.pow(Settings.bubbleRadius, 2)*bubble.weight);
+	}
+	
+	public void calculateReticleBubble (Reticle reticle, Bubble bubble)
+	{
+		bubble.r = this.calculateBubbleRadius(bubble);
+		if (reticle.x >= bubble.x-bubble.r && reticle.x <= bubble.x+bubble.r && bubble.y+bubble.r >= reticle.y && bubble.moving == false)
+		{
+			reticle.y = bubble.y+Math.sqrt(Math.pow(bubble.r, 2)-Math.pow(reticle.x-bubble.x, 2));
+		}
+	}
+	public void calculateReticleBlock (Reticle reticle, Block block)
+	{
+		if (reticle.x >= block.x-block.w/2 && reticle.x <= block.x+block.w/2 && block.y+block.h/2 >= reticle.y)
+		{
+			reticle.y = block.y+block.h/2;
+		}
+	}
+	public void calculateReticlePortal (Reticle reticle, Portal portal)
+	{
+		if (reticle.x >= portal.entranceX-portal.entranceW/2 && reticle.x <= portal.entranceX+portal.entranceW/2 && portal.entranceY-portal.entranceW/2 >= reticle.y)
+		{
+			reticle.y = portal.entranceY;
+		}
+	}
+	public void calculateReticleSlopedBlock (Reticle reticle, SlopedBlock slopedBlock)
+	{
+		double slope = (double)(slopedBlock.y2-slopedBlock.y1)/(slopedBlock.x2-slopedBlock.x1);
+		//double perpendicularSlope = 0-1/slope;
+		double lineConstant = (double)slopedBlock.y1-slope*(double)slopedBlock.x1;
+		if (reticle.x >= slopedBlock.x1 && reticle.x <= slopedBlock.x2 && slope*reticle.x+lineConstant >= reticle.y)
+		{
+			reticle.y = slope*reticle.x+lineConstant;
+		}
 	}
 	
 	public void calculateBubble (Bubble bubble)

@@ -1,5 +1,6 @@
 //package stegrex.bubbles.game;
 
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 class Game
@@ -20,6 +21,8 @@ class Game
 	public Calculate calculate;
 	public View view;
 	
+	public Reticle reticle = new Reticle();
+	
 	public Portal[] portals = new Portal[20];
 	public Block[] blocks = new Block[20];
 	public SlopedBlock[] slopedBlocks = new SlopedBlock[20];
@@ -28,7 +31,7 @@ class Game
 	public Bubble[] asplodeBubbles = new Bubble[50];
 	public Lever[] levers = new Lever[20];
 	
-	public Random random = new Random();
+	public Random random = new Random(); // Revisit. Random used in multiple places.
 	
 	public GameLevel gameLevel; // Implement.
 	
@@ -36,6 +39,9 @@ class Game
 	public boolean splashDemoLoaded = false;
 	
 	public double defaultBubbleSpeed;
+	
+	public boolean fireBubbleSafety = false;
+	public int lastPressedButton = 0;
 	
 	//public static double delta = 0; // Delta value for multiplication to every distance calculation per game frame.
 	
@@ -45,7 +51,14 @@ class Game
 		this.calculate = new Calculate();
 		this.view = new View();
 		this.initializeTime = System.currentTimeMillis();
-		this.runSplashDemo();
+		if (Settings.runSplashDemo == true)
+		{
+			this.runSplashDemo();
+		}
+		else
+		{
+			this.load(1);
+		}
 	}
 	
 	public void runSplashDemo ()
@@ -62,13 +75,13 @@ class Game
 			Settings.bubbleSpeed = this.defaultBubbleSpeed;
 			this.splashDemoLoaded = false;
 			this.initializeTime = 0;
-			this.unload();
 			this.load(1);
 		}
 	}
 	
 	public void load (int levelNumber)
 	{
+		this.unload();
 		if (this.gameLevel == null)
 		{
 			this.gameLevel = new GameLevel();
@@ -121,14 +134,57 @@ class Game
 		this.view.addMouseInput(mouseInput);
 	}
 	
-	public void handleMouseClick (int x, int y)
+	public void handleMousePress (int x, int y)
 	{
-		this.createBubble(x, y);
-		//this.dumpGameState(); // Debug
+		this.turnOnReticle(x);
+		this.fireBubbleSafety = false;
+		this.lastPressedButton = MouseEvent.BUTTON1;
+	}
+	public void handleMouseRightPress (int x, int y)
+	{
+		this.turnOffReticle();
+		this.fireBubbleSafety = true;
+		this.lastPressedButton = MouseEvent.BUTTON3;
+	}
+	public void handleMouseRelease (int x, int y)
+	{
+		this.turnOffReticle();
+		if (this.fireBubbleSafety == false)
+		{
+			if (Settings.freeBubblePlacement == true)
+			{
+				this.createBubble(x, y);
+			}
+			else
+			{
+				this.createBubble(x, Settings.canvasY);
+			}
+		}
+		this.fireBubbleSafety = false;
+		this.lastPressedButton = MouseEvent.NOBUTTON;
+	}
+	public void handleMouseDrag (int x, int y)
+	{
+		if (this.lastPressedButton == MouseEvent.BUTTON1)
+		{
+			this.turnOnReticle(x);
+		}
 	}
 	
 	public void checkBubblePool () // Revisit. Destruction loop already written in main calculate.
 	{
+	}
+	
+	public void turnOnReticle (int x)
+	{
+		this.reticle.x = x;
+		//this.reticle.y = 0; // Debug
+		this.reticle.isOn = true;
+	}
+	
+	public void turnOffReticle ()
+	{
+		this.reticle.isOn = false;
 	}
 	
 	public void createBubble (int x, int y)
@@ -142,6 +198,7 @@ class Game
 				break;
 			}
 		}
+		//this.dumpGameState(); // Debug
 	}
 	
 	public void createRandomBubble ()
@@ -172,6 +229,41 @@ class Game
 		}
 		
 		//this.dumpGameState(); // Debug
+		
+		// Calculate the reticle.
+		
+		this.reticle.y = 0;
+		
+		// Revisit. Possibly use this to leverage sorting objects into pools where the bubble y value is within the limits.
+		for (int n = 0; n < this.bubbles1.length; n++)
+		{
+			if (this.bubbles1[n] != null)
+			{
+				this.calculate.calculateReticleBubble(this.reticle, this.bubbles1[n]);
+			}
+		}
+		for (int n = 0; n < this.blocks.length; n++)
+		{
+			if (this.blocks[n] != null)
+			{
+				this.calculate.calculateReticleBlock(this.reticle, this.blocks[n]);
+			}
+		}
+		for (int n = 0; n < this.portals.length; n++)
+		{
+			if (this.portals[n] != null)
+			{
+				this.calculate.calculateReticlePortal(this.reticle, this.portals[n]);
+			}
+		}
+		for (int n = 0; n < this.slopedBlocks.length; n++)
+		{
+			if (this.slopedBlocks[n] != null)
+			{
+				this.calculate.calculateReticleSlopedBlock(this.reticle, this.slopedBlocks[n]);
+			}
+		}
+		
 		// Iterate through the object pool and call the correct interact context between object types.
 		this.calculate.setDelta(delta);
 		this.calculate.setLastDelta(lastDelta);
@@ -271,13 +363,15 @@ class Game
 		
 		//this.view.clear();
 		
+		this.view.setReticle(this.reticle);
+		
 		this.view.setPortals(this.portals);
 		this.view.setBlocks(this.blocks);
 		this.view.setSlopedBlocks(this.slopedBlocks);
 		this.view.setBubbles1(this.bubbles1);
 		this.view.setAsplodeBubbles(this.asplodeBubbles);
 		this.view.setLevers(this.levers);
-
+		
 		this.view.redraw();
 	}
 	

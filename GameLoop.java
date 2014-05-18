@@ -28,11 +28,32 @@ class GameLoop
 		this.game.addMouseInput(mouseInput);
 	}
 	
-	public void handleMouseClick (int x, int y)
+	public void handleMousePress (int x, int y)
 	{
 		if (this.gameRunning == true)
 		{
-			this.game.handleMouseClick(x, y);
+			this.game.handleMousePress(x, y);
+		}
+	}
+	public void handleMouseRightPress (int x, int y)
+	{
+		if (this.gameRunning == true)
+		{
+			this.game.handleMouseRightPress(x, y);
+		}
+	}
+	public void handleMouseRelease (int x, int y)
+	{
+		if (this.gameRunning == true)
+		{
+			this.game.handleMouseRelease(x, y);
+		}
+	}
+	public void handleMouseDrag (int x, int y)
+	{
+		if (this.gameRunning == true)
+		{
+			this.game.handleMouseDrag(x, y);
 		}
 	}
 	

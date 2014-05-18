@@ -3,13 +3,12 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+//import java.awt.event.MouseEvent;
+//import java.awt.event.MouseListener;
 import java.awt.geom.GeneralPath;
 	import java.awt.geom.Arc2D;
 	import java.awt.Rectangle;
 import java.awt.Color;
-import java.util.Random;
 
 // This render version is specific to Swing.
 class View
@@ -18,7 +17,6 @@ class View
 	// ViewGraphics
 	// ViewRender
 	
-	public Random random = new Random();
 	public ViewGraphics viewGraphics;
 	
 	public View ()
@@ -34,6 +32,7 @@ class View
 	public void addMouseInput (MouseInput mouseInput)
 	{
 		this.viewGraphics.addMouseListener(mouseInput);
+		this.viewGraphics.addMouseMotionListener(mouseInput);
 	}
 	
 	public void redraw ()
@@ -42,6 +41,10 @@ class View
 	}
 	
 	// Render pool set methods.
+	public void setReticle (Reticle reticle)
+	{
+		this.viewGraphics.reticle = reticle;
+	}
 	public void setPortals (Portal[] portals)
 	{
 		this.viewGraphics.portals = portals;

@@ -4,17 +4,16 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
-	//import java.awt.geom.Arc2D;
-	import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.RenderingHints;
+import java.util.Random;
 
 class ViewGraphics extends JPanel
 {
 	
 	public Render render = new Render();
 	
+	public Reticle reticle;
 	public Portal[] portals;
 	public Block[] blocks;
 	public SlopedBlock[] slopedBlocks;
@@ -23,25 +22,15 @@ class ViewGraphics extends JPanel
 	public Bubble[] asplodeBubbles;
 	public Lever[] levers;
 	
-	public GeneralPath[] paths = new GeneralPath[500];
-	
-	public GeneralPath blocksPath = new GeneralPath();
-	public GeneralPath slopedBlocksPath = new GeneralPath();
-	public GeneralPath bubblesPath = new GeneralPath();
-	public GeneralPath asplodeBubblesPath1 = new GeneralPath();
-	public GeneralPath asplodeBubblesPath2 = new GeneralPath();
-	public GeneralPath asplodeBubblesPath3 = new GeneralPath();
-	public GeneralPath leversPath = new GeneralPath();
 	public AffineTransform leverTransform = new AffineTransform();
 	
 	public Graphics g;
 	public Graphics2D g2d;
 	
-	public boolean antialias;
+	public Random random = new Random(); // Revisit. Random used in multiple places.
 	
 	public void paintComponent (Graphics g)
 	{
-		this.g = g;
 		this.g2d = (Graphics2D) g;
 		this.g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		this.g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -109,6 +98,19 @@ class ViewGraphics extends JPanel
 				this.leverTransform.rotate(-Math.PI*levers[x].angle/180, levers[x].x, levers[x].y);
 				this.g2d.transform(this.leverTransform);
 			}
+		}
+		
+		if (this.reticle != null && this.reticle.isOn == true)
+		{
+			if (Settings.reticleColor == Settings.ReticleColor.GREEN)
+			{
+				this.g2d.setPaint(new Color(30, 255, 100, 255-this.random.nextInt(120)));
+			}
+			else if (Settings.reticleColor == Settings.ReticleColor.RED)
+			{
+				this.g2d.setPaint(new Color(255, 100, 80, 255-this.random.nextInt(80)));
+			}
+			this.g2d.draw(this.render.renderReticle(this.reticle));
 		}
 		
 	}

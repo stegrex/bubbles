@@ -13,7 +13,7 @@ class Render
 	
 	// View
 	
-	public Random random = new Random();
+	public Random random = new Random(); // Revisit. Random used in multiple places.
 	public View view;
 	
 	public Render ()
@@ -22,6 +22,18 @@ class Render
 	}
 	
 	// For each render method, pass in objects, and set the correct paths.
+	public GeneralPath renderReticle (Reticle reticle)
+	{
+		GeneralPath path = new GeneralPath();
+		if (Settings.showReticleLaser == true)
+		{
+			path.moveTo(reticle.x, Settings.canvasY);
+			path.lineTo(reticle.x, reticle.y);
+		}
+		path.append(new Arc2D.Double(reticle.x-Settings.reticleSize, reticle.y-Settings.reticleSize, Settings.reticleSize*2, Settings.reticleSize*2, 0, 360, Arc2D.OPEN), false);
+		path.append(new Arc2D.Double(reticle.x-Settings.reticleSize/2, reticle.y-Settings.reticleSize/2, (Settings.reticleSize/2)*2, (Settings.reticleSize/2)*2, 0, 360, Arc2D.OPEN), false);
+		return path;
+	}
 	public GeneralPath renderPortal (Portal portal)
 	{
 		GeneralPath path = new GeneralPath();
