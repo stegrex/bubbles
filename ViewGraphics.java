@@ -15,6 +15,7 @@ class ViewGraphics extends JPanel
 	
 	public Render render = new Render();
 	
+	public Portal[] portals;
 	public Block[] blocks;
 	public SlopedBlock[] slopedBlocks;
 	public Bubble[] bubbles1;
@@ -67,6 +68,14 @@ class ViewGraphics extends JPanel
 		this.setBackground(Color.BLACK); // Setting background color.
 		
 		// Handle static objects that can be processed in a single pool.
+		this.g2d.setPaint(Color.RED);
+		for (int x = 0; (this.portals != null && x < this.portals.length); x++)
+		{
+			if (this.portals[x] != null)
+			{
+				this.g2d.draw(this.render.renderPortal(this.portals[x]));
+			}
+		}
 		this.g2d.setPaint(Color.WHITE);
 		for (int x = 0; (this.blocks != null && x < this.blocks.length); x++)
 		{

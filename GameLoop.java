@@ -48,6 +48,14 @@ class GameLoop
 			
 			double delta = updateLength/(double)timePerRender;
 			
+			if (Settings.autoShoot == 1)
+			{
+				for (int x = 0; x < 100; x++)
+				{
+					Game.createRandomBubble();
+				}
+			}
+			
 			//this.setDelta(delta);
 			this.calculate(delta);
 			

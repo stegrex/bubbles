@@ -1,13 +1,3 @@
-2012-10-19a
+2012-10-19b
 
-Updated SlopedBlock calculation
-
-Class: Calculate
-- Edited method calculateBubbleSlopedBlock by adding calculation
-bubbleSpeedRatio.
-- Bubble speed ratio is defined by the slope's rise/(rise+run), so a
-vertical line's ratio would be 1, horizontal line's ratio would be 0,
-and line of slope 1 would have ratio of 0.5
-- Calculation bubbleSpeedRatio is then multiplied to the horizontal
-movement along the slope, which simulates slower movement when the
-slope is more horizontal.
+Added portals.

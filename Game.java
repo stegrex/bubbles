@@ -1,5 +1,7 @@
 //package stegrex.bubbles.game;
 
+import java.util.Random;
+
 class Game
 {
 	
@@ -18,12 +20,15 @@ class Game
 	public Calculate calculate;
 	public View view;
 	
-	public static Block[] blocks = new Block[50];
-	public static SlopedBlock[] slopedBlocks = new SlopedBlock[50];
-	public static Bubble[] bubbles1 = new Bubble[50];
+	public static Portal[] portals = new Portal[20];
+	public static Block[] blocks = new Block[20];
+	public static SlopedBlock[] slopedBlocks = new SlopedBlock[20];
+	public static Bubble[] bubbles1 = new Bubble[100];
 	public static Bubble[] bubbles2 = new Bubble[50]; // Revisit. Is a second bubble object pool necessary?
 	public static Bubble[] asplodeBubbles = new Bubble[50];
-	public static Lever[] levers = new Lever[50];
+	public static Lever[] levers = new Lever[20];
+	
+	public static Random random = new Random();
 	
 	//public static double delta = 0; // Delta value for multiplication to every distance calculation per game frame.
 	
@@ -46,6 +51,8 @@ class Game
 		Game.slopedBlocks[1] = new SlopedBlock(10, 200, 150, 250, 0, 0); // Revisit. Last two params necessary?
 		Game.slopedBlocks[2] = new SlopedBlock(0, 135, 125, 80, 0, 0);
 		Game.slopedBlocks[3] = new SlopedBlock(150, 200, 300, 300, 0, 0);
+		
+		Game.portals[0] = new Portal(140, 100, 20, 200, 180, 20);
 		
 		
 		//Game.levers[0] = new Lever(200, 300, 50, 5, 15);
@@ -83,6 +90,11 @@ class Game
 		}
 	}
 	
+	public static void createRandomBubble ()
+	{
+		Game.createBubble(Game.random.nextInt(Settings.canvasX), Game.random.nextInt(Settings.canvasY));
+	}
+	
 	public void createAsplodeBubble (Bubble bubble)
 	{
 		// Create bubble object and add to bubble object pool.
@@ -116,6 +128,18 @@ class Game
 						if (combined == true)
 						{
 							Game.bubbles1[n] = null;
+						}
+					}
+				}
+				// Calculate bubble - portal.
+				for (int n = 0; n < Game.portals.length; n++)
+				{
+					if (this.portals[n] != null)
+					{
+						updated = this.calculate.calculateBubblePortal(Game.bubbles1[i], Game.portals[n]);
+						if (updated == true)
+						{
+							break;
 						}
 					}
 				}
@@ -182,6 +206,7 @@ class Game
 		
 		//this.view.clear();
 		
+		this.view.setPortals(this.portals);
 		this.view.setBlocks(this.blocks);
 		this.view.setSlopedBlocks(this.slopedBlocks);
 		this.view.setBubbles1(this.bubbles1);

@@ -49,6 +49,10 @@ class View
 	*/
 	
 	// Render pool set methods.
+	public void setPortals (Portal[] portals)
+	{
+		this.viewGraphics.portals = portals;
+	}
 	public void setBlocks (Block[] blocks)
 	{
 		this.viewGraphics.blocks = blocks;

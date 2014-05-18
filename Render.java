@@ -44,6 +44,24 @@ class Render
 	}
 	*/
 	// For each render method, pass in objects, and set the correct paths.
+	public GeneralPath renderPortal (Portal portal)
+	{
+		GeneralPath path = new GeneralPath();
+		
+		path.moveTo(portal.entranceX, portal.entranceY);
+		path.lineTo(portal.entranceX+portal.entranceW, portal.entranceY);
+		path.lineTo(portal.entranceX+portal.entranceW, portal.entranceY+portal.entranceW/2);
+		path.lineTo(portal.entranceX, portal.entranceY+portal.entranceW/2);
+		path.lineTo(portal.entranceX, portal.entranceY);
+		
+		path.moveTo(portal.exitX, portal.exitY);
+		path.lineTo(portal.exitX+portal.exitW, portal.exitY);
+		path.lineTo(portal.exitX+portal.exitW, portal.exitY+portal.exitW/2);
+		path.lineTo(portal.exitX, portal.exitY+portal.exitW/2);
+		path.lineTo(portal.exitX, portal.exitY);
+		
+		return path;
+	}
 	public GeneralPath renderBlock (Block block)
 	{
 		// Redo. Look at GeneralPath method append()
@@ -67,10 +85,11 @@ class Render
 	
 	public GeneralPath renderBubble (Bubble bubble) // Pass in different Object types to be rendered.
 	{
-		// Revisit. Add random x motion if bubble is moving.
 		//Shape bubbleShape = new Arc2D.Double();
 		GeneralPath path = new GeneralPath();
-		path.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
+		//path.append(new Arc2D.Double(bubble.x-bubble.r+(bubble.moving ? 1.5*Math.sqrt(bubble.r)*(0.5-this.random.nextDouble()) : 0), bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
+		// Debug, random vertical just for fun.
+		path.append(new Arc2D.Double(bubble.x-bubble.r+(bubble.moving == true? Settings.bubbleWiggleRatio*Math.sqrt(bubble.r)*(0.5-this.random.nextDouble()) : 0), bubble.y-bubble.r+(bubble.moving == true ? Settings.bubbleWiggleRatio*Math.sqrt(bubble.r)*(0.5-this.random.nextDouble()) : 0), bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
 		//path.append(new Arc2D.Double(bubble.x-bubble.r+0.25, bubble.y-bubble.r+0.25, bubble.r*2-0.5, bubble.r*2-0.5, 0, 360, Arc2D.OPEN), false); // Revisit. Making bubble line thicker.
 		return path;
 	}
@@ -84,7 +103,7 @@ class Render
 	public GeneralPath renderAsplodeBubble2 (Bubble bubble)
 	{
 		GeneralPath path = new GeneralPath();
-		path.append(new Arc2D.Double(bubble.x-bubble.r+Math.sqrt(bubble.r)*(1-2*this.random.nextDouble()), bubble.y-bubble.r, bubble.r*2, bubble.r*2, 90+bubble.d+this.random.nextDouble()*10, 360-2*bubble.d-this.random.nextDouble()*10, Arc2D.OPEN), false);
+		path.append(new Arc2D.Double(bubble.x-bubble.r+Settings.asplodeWiggleRatio*Math.sqrt(bubble.r)*(0.5-1*this.random.nextDouble()), bubble.y-bubble.r+Settings.asplodeWiggleRatio*Math.sqrt(bubble.r)*(0.5-1*this.random.nextDouble()), bubble.r*2, bubble.r*2, 90+bubble.d+this.random.nextDouble()*10, 360-2*bubble.d-this.random.nextDouble()*10, Arc2D.OPEN), false);
 		return path;
 	}
 	public GeneralPath renderAsplodeBubble3 (Bubble bubble)

@@ -79,6 +79,19 @@ class Calculate
 		return true;
 	}
 	
+	public boolean calculateBubblePortal (Bubble bubble, Portal portal)
+	{
+		bubble.r = this.calculateBubbleRadius(bubble); // Revisit. Probably not necessary to make so many calculations per update. Perhaps calculate during calculateBubbleBubble only.
+		if ((bubble.x >= portal.entranceX && bubble.x <= portal.entranceX+portal.entranceW) && (bubble.y >= portal.entranceY+portal.entranceW/2+bubble.r && bubble.y <= portal.entranceY+portal.entranceW/2+bubble.r+Settings.bubbleSpeed*this.delta))
+		{
+			bubble.x = portal.exitX+portal.exitW/2;
+			bubble.y = portal.exitY-portal.exitW/2-bubble.r;
+			//bubble.moving = true;
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean calculateBubbleBlock (Bubble bubble, Block block)
 	{
 		bubble.r = this.calculateBubbleRadius(bubble);

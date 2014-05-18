@@ -12,7 +12,13 @@ class Settings
 	public static int maxBubbleWeight = 15; // Maximum weight of the bubble before it asplodes. Default 15.
 	public static int bubbleFrequency = 150; // Milliseconds in between firings. Default 150.
 	public static int combineBubbleMode = 0;
-	public static int canvasX = 320;
-	public static int canvasY = 480;
+	public static int canvasX = 320; // Horizontal size of window. Default 320.
+	public static int canvasY = 480; // Vertical size of window. Default 480.
 	public static int asplodeBubbleRate = 150; // Part of the original radius that gets subtracted every frame. Default 150.
+	public static double bubbleWiggleRatio = 1.5; // The amount of wiggling when bubble is moving. Default 1.5.
+	public static double asplodeWiggleRatio = 3; // The amount of wiggling when bubble is asploding. Default 3.
+	
+	// For fun.
+	//public static int canvasX = 1440; // Horizontal size of window. Default 320.
+	//public static int canvasY = 900; // Vertical size of window. Default 480.
 }
