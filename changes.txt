@@ -1,32 +1,25 @@
-2012-09-23
+2012-09-29
 
-Mainly added some changes to how the classes are handled and how the
-rendering is handled.
-
-Changes:
-
-Class: GameLoop
-- Moved the Render object into the Game class.
-- Changed most static instances into dynamic instances.
-- Added Game.delta field for smoother renders.
+Refactored the way rendering is done.
 
 Class: Game
-- Added instance of the Render.
-- Changed most static instances into dynamic instances (main reason is
-to not have as many "global" objects, to enforce accessing objects in
-the best class).
+- Now contains an instance of class View.
+- Render method now mapped to new View methods.
+- The Game class should handle the data calculation side, but not too
+much of the render logic.
 
-Class: Calculate
-- Added the Game.delta value to any calculation that has to do with
-rate (distances).
-- The delta value is calculated in the GameLoop to figure out any
-timer disparities (since the Java timer is not guaranteed).
-- The delta value, when factored into calculations, will place the
-position of any object's movement in the correct position relative to
-real time (as opposed to game frame time, like before).
-- The delta value reduces jerky movement in rendering when the game's
-FPS changes (since the value ties the calculation of position relative
-to real time, and not FPS).
+Class: View (Formerly Render)
+- The View class now contains an instance of ViewGraphics (formerly View).
+- The purpose of the class is to provide an interface between the Game
+and the Graphics.
+- New methods simply pass the Game's object pool arrays to the
+ViewGraphics object.
 
-Class: View
-- Added antialiasing for rendering.
+Class: ViewGraphics
+- Handles the object pool by calling the Render class's methods to
+return GeneralPaths to draw.
+
+Class: Render
+- Contains all the old Render class's methods.
+- Uses render methods to return instances of GeneralPaths for the
+ViewGraphics class to handle.

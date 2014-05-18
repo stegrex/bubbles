@@ -14,7 +14,7 @@ class Game
 		// Current game delta value
 	
 	public Calculate calculate;
-	public Render render;
+	public View view;
 	
 	public static Block[] blocks = new Block[50];
 	public static Bubble[] bubbles1 = new Bubble[50];
@@ -22,13 +22,13 @@ class Game
 	public static Bubble[] asplodeBubbles = new Bubble[50];
 	public static Lever[] levers = new Lever[50];
 	
-	public static double delta = 0;
+	public static double delta = 0; // Delta value for multiplication to every distance calculation per game frame.
 	
 	public Game ()
 	{
 		this.calculate = new Calculate();
-		this.render = new Render();
 		this.load();
+		this.view = new View();
 	}
 	
 	public void load ()
@@ -37,11 +37,15 @@ class Game
 		Game.blocks[0] = new Block(200, 200, 100, 10);
 		Game.blocks[1] = new Block(50, 100, 50, 10);
 		Game.levers[0] = new Lever(200, 300, 50, 5, 15);
+		Game.levers[0].angle = 45; // Debug.
+		
+		Game.levers[1] = new Lever(100, 200, 50, 5, 15);
+		Game.levers[1].angle = 0; // Debug.
 	}
 	
 	public void addMouseInput (MouseInput mouseInput)
 	{
-		this.render.addMouseInput(mouseInput);
+		this.view.addMouseInput(mouseInput);
 	}
 	
 	public static void handleMouseClick (int x, int y)
@@ -114,7 +118,6 @@ class Game
 						}
 					}
 				}
-				
 				// Calculate asplode buddle.
 				if (this.calculate.calculateBubbleDestruct(Game.bubbles1[i]) == true)
 				{
@@ -147,46 +150,14 @@ class Game
 	{
 		// Iterate through object pool and call the correct render method.
 		
-		// Clear the view.
-		this.render.clear();
+		//this.view.clear();
 		
-		// Blocks
-		for (int i = 0; i < Game.blocks.length; i++)
-		{
-			if (Game.blocks[i] != null)
-			{
-				this.render.renderBlock(Game.blocks[i]);
-			}
-		}
-		
-		// Bubbles
-		for (int i = 0; i < Game.bubbles1.length; i++)
-		{
-			if (Game.bubbles1[i] != null)
-			{
-				this.render.renderBubble(Game.bubbles1[i]);
-			}
-		}
-		
-		// Asplode Bubbles
-		for (int i = 0; i < Game.asplodeBubbles.length; i++)
-		{
-			if (Game.asplodeBubbles[i] != null)
-			{
-				this.render.renderAsplodeBubble(Game.asplodeBubbles[i]);
-			}
-		}
-		
-		// Levers
-		for (int i = 0; i < Game.levers.length; i++)
-		{
-			if (Game.levers[i] != null)
-			{
-				this.render.renderLever(Game.levers[i]);
-			}
-		}
-		
-		this.render.redraw();
+		this.view.setBlocks(this.blocks);
+		this.view.setBubbles1(this.bubbles1);
+		this.view.setAsplodeBubbles(this.asplodeBubbles);
+		this.view.setLevers(this.levers);
+
+		this.view.redraw();
 	}
 	
 	// Debug

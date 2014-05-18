@@ -1,67 +1,108 @@
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.GeneralPath;
-	//import java.awt.geom.Arc2D;
+	import java.awt.geom.Arc2D;
 	import java.awt.Rectangle;
 import java.awt.Color;
-import java.awt.RenderingHints;
+import java.util.Random;
 
-class View extends JPanel
+// This render version is specific to Swing.
+class View
 {
 	
-	public GeneralPath blocksPath = new GeneralPath();
-	public GeneralPath bubblesPath = new GeneralPath();
-	public GeneralPath asplodeBubblesPath1 = new GeneralPath();
-	public GeneralPath asplodeBubblesPath2 = new GeneralPath();
-	public GeneralPath asplodeBubblesPath3 = new GeneralPath();
-	public GeneralPath leversPath = new GeneralPath();
-	public AffineTransform leverTransform = new AffineTransform();
+	// ViewGraphics
+	// ViewRender
 	
-	public Graphics g;
-	public Graphics2D g2d;
+	public Random random = new Random();
+	public ViewGraphics viewGraphics;
 	
-	public boolean antialias;
+	public View ()
+	{
+		JFrame frame = new JFrame("Bubbles");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.viewGraphics = new ViewGraphics();
+		frame.add(this.viewGraphics);
+		frame.setSize(Settings.canvasX, Settings.canvasY);
+		frame.setVisible(true);
+	}
 	
+	public void addMouseInput (MouseInput mouseInput)
+	{
+		this.viewGraphics.addMouseListener(mouseInput);
+	}
+	
+	public void redraw ()
+	{
+		this.viewGraphics.repaint();
+	}
+	
+	/*
 	public void clear ()
 	{
-		this.blocksPath = new GeneralPath();
-		this.bubblesPath = new GeneralPath();
-		this.asplodeBubblesPath1 = new GeneralPath();
-		this.asplodeBubblesPath2 = new GeneralPath();
-		this.asplodeBubblesPath3 = new GeneralPath();
-		this.leversPath = new GeneralPath();
+		this.viewGraphics.clear();
+	}
+	*/
+	
+	// Render pool set methods.
+	public void setBlocks (Block[] blocks)
+	{
+		this.viewGraphics.blocks = blocks;
+	}
+	public void setBubbles1 (Bubble[] bubbles1)
+	{
+		this.viewGraphics.bubbles1 = bubbles1;
+	}
+	public void setBubbles2 (Bubble[] bubbles2)
+	{
+		this.viewGraphics.bubbles2 = bubbles2;
+	}
+	public void setAsplodeBubbles (Bubble[] asplodeBubbles)
+	{
+		this.viewGraphics.asplodeBubbles = asplodeBubbles;
+	}
+	public void setLevers (Lever[] levers)
+	{
+		this.viewGraphics.levers = levers;
 	}
 	
-	public void paintComponent (Graphics g)
+	/*
+	// For each render method, pass in objects, and set the correct paths.
+	public void renderBlock (Block block)
 	{
-		this.g = g;
-		this.g2d = (Graphics2D) g;
-		this.g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		this.g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		
-		//Graphics2D g2d = (Graphics2D) g;
-		super.paintComponent(g);
-		this.setBackground(Color.BLACK); // Setting background color.
-		
-		this.g2d.setPaint(Color.WHITE); // Sets the paint color.
-		this.g2d.draw(this.blocksPath); // Draws the cube.
-		this.g2d.setPaint(Color.CYAN);
-		this.g2d.draw(this.bubblesPath); // Draws the bubbles.
-		this.g2d.setPaint(Color.CYAN);
-		this.g2d.draw(this.asplodeBubblesPath2); // Draws the bubbles.
-		this.g2d.setPaint(Color.CYAN);
-		this.g2d.draw(this.asplodeBubblesPath1); // Draws the bubbles.
-		this.g2d.setPaint(Color.WHITE);
-		this.g2d.draw(this.asplodeBubblesPath3); // Draws the bubbles.
-		
-		//leverTransform.translate(200, 300);
-		this.leverTransform.rotate(Math.PI/50, 150, 300);
-		this.g2d.setPaint(Color.WHITE);
-		this.g2d.transform(leverTransform);
-		this.g2d.draw(this.leversPath); // Draws the bubbles.
-		
+		// Look at GeneralPath method append()
+		this.viewGraphics.blocksPath.moveTo(block.x, block.y);
+		this.viewGraphics.blocksPath.lineTo(block.x+block.w, block.y);
+		this.viewGraphics.blocksPath.lineTo(block.x+block.w, block.y+block.h);
+		this.viewGraphics.blocksPath.lineTo(block.x, block.y+block.h);
+		this.viewGraphics.blocksPath.lineTo(block.x, block.y);
 	}
+	
+	public void renderBubble (Bubble bubble) // Pass in different Object types to be rendered.
+	{
+		// Revisit. Add random x motion if bubble is moving.
+		//Shape bubbleShape = new Arc2D.Double();
+		this.viewGraphics.bubblesPath.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
+		this.viewGraphics.bubblesPath.append(new Arc2D.Double(bubble.x-bubble.r+0.25, bubble.y-bubble.r+0.25, bubble.r*2-0.5, bubble.r*2-0.5, 0, 360, Arc2D.OPEN), false); // Revisit. Making bubble line thicker.
+	}
+	
+	public void renderAsplodeBubble (Bubble bubble)
+	{
+		this.viewGraphics.asplodeBubblesPath1.append(new Arc2D.Double((bubble.r*2-6 >= 0 ? bubble.x-bubble.r+3 : bubble.x-bubble.r), (bubble.r*2-6 >= 0 ? bubble.y-bubble.r+3 : bubble.y-bubble.r), (bubble.r*2-6 >= 0 ? bubble.r*2-6 : 0), (bubble.r*2-6 >= 0 ? bubble.r*2-6 : 0), 90+bubble.d, 360-2*bubble.d, Arc2D.OPEN), false);
+		this.viewGraphics.asplodeBubblesPath2.append(new Arc2D.Double(bubble.x-bubble.r+Math.sqrt(bubble.r)*(1-2*this.random.nextDouble()), bubble.y-bubble.r, bubble.r*2, bubble.r*2, 90+bubble.d+this.random.nextDouble()*10, 360-2*bubble.d-this.random.nextDouble()*10, Arc2D.OPEN), false);
+		this.viewGraphics.asplodeBubblesPath3.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 90-bubble.d, 2*bubble.d, Arc2D.OPEN), false);
+	}
+	
+	public void renderLever (Lever lever)
+	{
+		this.viewGraphics.leversPath.moveTo(lever.x-lever.w/2, lever.y);
+		this.viewGraphics.leversPath.lineTo(lever.x+lever.w-lever.w/2, lever.y);
+		this.viewGraphics.leversPath.lineTo(lever.x+lever.w-lever.w/2, lever.y+lever.h);
+		this.viewGraphics.leversPath.lineTo(lever.x-lever.w/2, lever.y+lever.h);
+		this.viewGraphics.leversPath.lineTo(lever.x-lever.w/2, lever.y);
+	}
+	*/
 	
 }
