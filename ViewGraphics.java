@@ -108,7 +108,7 @@ class ViewGraphics extends JPanel
 			}
 			else if (Settings.reticleColor == Settings.ReticleColor.RED)
 			{
-				this.g2d.setPaint(new Color(255, 100, 80, 255-this.random.nextInt(80)));
+				this.g2d.setPaint(new Color(255, 70, 70, 255-this.random.nextInt(100)));
 			}
 			this.g2d.draw(this.render.renderReticle(this.reticle));
 		}

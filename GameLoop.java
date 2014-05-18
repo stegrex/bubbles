@@ -20,7 +20,7 @@ class GameLoop
 	{
 		this.game = new Game();
 		//this.game.dumpGameState(); // Debug
-		this.gameRunning = true;
+		//this.game.gameRunning = true;
 	}
 	
 	public void addMouseInput (MouseInput mouseInput)
@@ -30,28 +30,28 @@ class GameLoop
 	
 	public void handleMousePress (int x, int y)
 	{
-		if (this.gameRunning == true)
+		if (this.game.gameRunning == true)
 		{
 			this.game.handleMousePress(x, y);
 		}
 	}
 	public void handleMouseRightPress (int x, int y)
 	{
-		if (this.gameRunning == true)
+		if (this.game.gameRunning == true)
 		{
 			this.game.handleMouseRightPress(x, y);
 		}
 	}
 	public void handleMouseRelease (int x, int y)
 	{
-		if (this.gameRunning == true)
+		if (this.game.gameRunning == true)
 		{
 			this.game.handleMouseRelease(x, y);
 		}
 	}
 	public void handleMouseDrag (int x, int y)
 	{
-		if (this.gameRunning == true)
+		if (this.game.gameRunning == true)
 		{
 			this.game.handleMouseDrag(x, y);
 		}
@@ -64,7 +64,7 @@ class GameLoop
 		final long timePerRender = 1000000000/targetFPS;
 		int calcCount = 0;
 		
-		while (this.gameRunning == true)
+		while (this.game.gameRunning == true)
 		{
 			long now = System.nanoTime();
 			long updateLength = now - lastLoopTime;

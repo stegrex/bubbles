@@ -18,6 +18,8 @@ class Game
 		// Control over object state changes
 		// Current game delta value
 	
+	public boolean gameRunning;
+	
 	public Calculate calculate;
 	public View view;
 	
@@ -31,12 +33,13 @@ class Game
 	public Bubble[] asplodeBubbles = new Bubble[50];
 	public Lever[] levers = new Lever[20];
 	
+	public GameEvent[] gameEvents = new GameEvent[10];
+	
 	public Random random = new Random(); // Revisit. Random used in multiple places.
 	
 	public GameLevel gameLevel; // Implement.
 	
-	public long initializeTime;
-	public boolean splashDemoLoaded = false;
+	public long initializeTime; // Revisit. Needed?
 	
 	public double defaultBubbleSpeed;
 	
@@ -50,33 +53,17 @@ class Game
 		this.gameLevel = new GameLevel();
 		this.calculate = new Calculate();
 		this.view = new View();
-		this.initializeTime = System.currentTimeMillis();
+		//this.initializeTime = System.currentTimeMillis(); // Revisit
 		if (Settings.runSplashDemo == true)
 		{
-			this.runSplashDemo();
+			this.createGameEvent(GameEvent.Type.SPLASH_DEMO, 500); // Should be roughly 8 seconds.
 		}
 		else
 		{
 			this.load(1);
 		}
-	}
-	
-	public void runSplashDemo ()
-	{
-		if (this.splashDemoLoaded == false)
-		{
-			this.defaultBubbleSpeed = Settings.bubbleSpeed;
-			Settings.bubbleSpeed = 0.15;
-			this.load(0);
-			this.splashDemoLoaded = true;
-		}
-		if (System.currentTimeMillis() >= this.initializeTime+10000)
-		{
-			Settings.bubbleSpeed = this.defaultBubbleSpeed;
-			this.splashDemoLoaded = false;
-			this.initializeTime = 0;
-			this.load(1);
-		}
+		this.gameRunning = true;
+		//this.createGameEvent(GameEvent.Type.DEBUG_PAUSE, 5000); // Debug
 	}
 	
 	public void load (int levelNumber)
@@ -86,7 +73,7 @@ class Game
 		{
 			this.gameLevel = new GameLevel();
 		}
-		System.out.println("Level"+levelNumber); // Debug
+		//System.out.println("Level"+levelNumber); // Debug
 		this.gameLevel.setCurrentLevel(levelNumber);
 		this.gameLevel.loadPortals(this.portals);
 		this.gameLevel.loadBlocks(this.blocks);
@@ -129,11 +116,70 @@ class Game
 		}
 	}
 	
+	// Duration is in ms.
+	public void createGameEvent (GameEvent.Type command, long duration)
+	{
+		for (int i = 0; i < this.gameEvents.length; i++)
+		{
+			if (this.gameEvents[i] == null)
+			{
+				switch (command)
+				{
+					case SPLASH_DEMO:
+						this.defaultBubbleSpeed = Settings.bubbleSpeed;
+						Settings.bubbleSpeed = 0.15;
+						this.load(0);
+						break;
+					default:
+						break;
+				}
+				this.gameEvents[i] = new GameEvent(command, duration);
+				break;
+			}
+		}
+	}
+	
+	public void runGameEvents ()
+	{
+		// Checking whether the Splash Demo should be run.
+		for (int i = 0; i < this.gameEvents.length; i++)
+		{
+			// Debug
+			///*
+			if (this.gameEvents[i] != null)
+			{
+				this.gameEvents[i].dumpObject();
+			}
+			//*/
+			if (this.gameEvents[i] != null && System.currentTimeMillis() >= this.gameEvents[i].endTime && this.gameEvents[i].executed == false)
+			{
+				switch (this.gameEvents[i].command)
+				{
+					case SPLASH_DEMO:
+						Settings.bubbleSpeed = this.defaultBubbleSpeed;
+						this.load(1);
+						break;
+					// Debug
+					/*
+					case DEBUG_PAUSE:
+						this.gameRunning = false;
+						break;
+					*/
+					default:
+						break;
+				}
+				this.gameEvents[i].execute();
+				this.gameEvents[i] = null;
+			}
+		}
+	}
+	
 	public void addMouseInput (MouseInput mouseInput)
 	{
 		this.view.addMouseInput(mouseInput);
 	}
 	
+	// Revisit. Possibly put the UI methods into its own class.
 	public void handleMousePress (int x, int y)
 	{
 		this.turnOnReticle(x);
@@ -187,6 +233,7 @@ class Game
 		this.reticle.isOn = false;
 	}
 	
+	// Revisit. Possibly move this out to its own GamePool class.
 	public void createBubble (int x, int y)
 	{
 		// Create bubble object and add to bubble object pool.
@@ -201,11 +248,13 @@ class Game
 		//this.dumpGameState(); // Debug
 	}
 	
+	// Revisit. Possibly move this out to its own GamePool class.
 	public void createRandomBubble ()
 	{
 		this.createBubble(this.random.nextInt(Settings.canvasX), this.random.nextInt(Settings.canvasY));
 	}
 	
+	// Revisit. Possibly move this out to its own GamePool class.
 	public void createAsplodeBubble (Bubble bubble)
 	{
 		// Create bubble object and add to bubble object pool.
@@ -219,15 +268,11 @@ class Game
 		}
 	}
 	
+	// Revisit. Possibly move this out to its own GamePool class.
 	public void calculate (double delta, double lastDelta)
 	{
 		
-		// Checking whether the Splash Demo should be run.
-		if (this.splashDemoLoaded == true)
-		{
-			this.runSplashDemo();
-		}
-		
+		this.runGameEvents();
 		//this.dumpGameState(); // Debug
 		
 		// Calculate the reticle.

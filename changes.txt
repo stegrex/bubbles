@@ -1,5 +1,14 @@
-2012-11-24
+2012-12-26
 
-Added the Reticle class.
+Added new GameEvent class for handling event queues. Preparation for refactoring.
 
-Improved mouse handling.
+Class: Game
+- Added code for handling new GameEvent types.
+- Moved Splash Demo Screen to be a GameEvent type.
+
+Class: GameEvent
+- Added new class.
+- Not really multithreading, but allows for quick and easy way to schedule events that don't require extreme granularity (depends on whenever the game frame update picks it up).
+
+Class: GamePool
+- Added new class to get ready for refactoring anything related to the gamepool from the Game class.
