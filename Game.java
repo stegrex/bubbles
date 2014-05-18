@@ -64,7 +64,6 @@ class Game
 	{
 		this.gameRunning = false;
 		this.unload();
-		this.gameRunning = true;
 		if (this.gameLevel == null)
 		{
 			this.gameLevel = new GameLevel();
@@ -78,6 +77,7 @@ class Game
 		this.gameLevel.loadBubbles2(this.gamePool.bubbles2);
 		this.gameLevel.loadAsplodeBubbles(this.gamePool.asplodeBubbles);
 		this.gameLevel.loadLevers(this.gamePool.levers);
+		this.gameRunning = true;
 	}
 	
 	public void save (int saveSlot)

@@ -1,14 +1,6 @@
-2013-03-20
+2013-04-17
 
-Added null handling for JSON objects serialization and parsing. Added deserialization rules for more objects. Tested loading a saved game.
-
-Class: GameLevel
-- Implemented methods loadBubbles1(), loadBubbles2(), and loadAsplodeBubbles().
-- Fixed method for saving asplodeBubbles to JSON.
+Fixed some JSON parsing issues.
 
 Class: BubblesJSONParser
-- Added handling for parsing null values from JSON strings.
-- Modified handling for quoted strings (included single quotes).
-
-Class: BubblesJSONObject
-- Added null value storage and handling.
+- Fixed bug with closing delimiters in string data types being parsed incorrectly.

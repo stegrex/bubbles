@@ -5,6 +5,7 @@ class Settings
 	
 	// Game File settings
 	public static String gameFile = "levels.wad";
+	//public static String gameFile = "testsave.wad";
 	
 	// Environment settings
 	public static int canvasX = 320; // Horizontal size of window. Default 320.
