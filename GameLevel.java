@@ -21,7 +21,7 @@ class GameLevel
 	
 	public GameLevel ()
 	{
-		Scanner fileScanner = new Scanner(this.getClass().getResourceAsStream("/"+"levels"));
+		Scanner fileScanner = new Scanner(this.getClass().getResourceAsStream("/"+Settings.gameFile));
 		while (fileScanner.hasNext()) // Iterates through the lines of the file.
 		{
 			this.levelsJSON += fileScanner.nextLine();
@@ -202,6 +202,8 @@ class GameLevel
 				bubbleObject.add("moving", asplodeBubbles[i].moving);
 				bubbleObject.add("asploding", asplodeBubbles[i].asploding);
 				bubbleObject.add("destroy", asplodeBubbles[i].destroy);
+				bubbleObject.add("d", asplodeBubbles[i].d);
+				bubbleObject.add("rStart", asplodeBubbles[i].rStart);
 				asplodeBubblesObject.add(i, bubbleObject);
 				count++;
 			}
@@ -295,6 +297,24 @@ class GameLevel
 	}
 	public void loadBubbles1 (Bubble[] bubbles1)
 	{
+		String type = "BUBBLES1";
+		if (this.isObjectValidForIteration(type))
+		{
+			for (Object x : (this.getCurrentLevelObjectKeySet(type)))
+			{
+				bubbles1[(Integer)x] = new Bubble((Double)getObjectParameter(type, x, "x"), (Double)getObjectParameter(type, x, "y"));
+				bubbles1[(Integer)x].destroy = (Boolean)getObjectParameter(type, x, "destroy");
+				bubbles1[(Integer)x].weight = (Double)getObjectParameter(type, x, "weight");
+				bubbles1[(Integer)x].moving = (Boolean)getObjectParameter(type, x, "moving");
+				bubbles1[(Integer)x].r = (Double)getObjectParameter(type, x, "r");
+				bubbles1[(Integer)x].asploding = (Boolean)getObjectParameter(type, x, "asploding");
+				bubbles1[(Integer)x].isBlocked = (Boolean)getObjectParameter(type, x, "isBlocked");
+			}
+		}
+	}
+	/*
+	public void loadBubbles1 (Bubble[] bubbles1)
+	{
 		switch (this.currentLevel)
 		{
 			case 0:
@@ -353,24 +373,41 @@ class GameLevel
 				break;
 		}
 	}
+	*/
 	public void loadBubbles2 (Bubble[] bubbles2)
 	{
-		switch (this.currentLevel)
+		String type = "BUBBLES2";
+		if (this.isObjectValidForIteration(type))
 		{
-			case 0:
-				break;
-			case 1:
-				break;
+			for (Object x : (this.getCurrentLevelObjectKeySet(type)))
+			{
+				bubbles2[(Integer)x] = new Bubble((Double)getObjectParameter(type, x, "x"), (Double)getObjectParameter(type, x, "y"));
+				bubbles2[(Integer)x].destroy = (Boolean)getObjectParameter(type, x, "destroy");
+				bubbles2[(Integer)x].weight = (Double)getObjectParameter(type, x, "weight");
+				bubbles2[(Integer)x].moving = (Boolean)getObjectParameter(type, x, "moving");
+				bubbles2[(Integer)x].r = (Double)getObjectParameter(type, x, "r");
+				bubbles2[(Integer)x].asploding = (Boolean)getObjectParameter(type, x, "asploding");
+				bubbles2[(Integer)x].isBlocked = (Boolean)getObjectParameter(type, x, "isBlocked");
+			}
 		}
 	}
 	public void loadAsplodeBubbles (Bubble[] asplodeBubbles)
 	{
-		switch (this.currentLevel)
+		String type = "ASPLODE_BUBBLES";
+		if (this.isObjectValidForIteration(type))
 		{
-			case 0:
-				break;
-			case 1:
-				break;
+			for (Object x : (this.getCurrentLevelObjectKeySet(type)))
+			{
+				asplodeBubbles[(Integer)x] = new Bubble((Double)getObjectParameter(type, x, "x"), (Double)getObjectParameter(type, x, "y"));
+				asplodeBubbles[(Integer)x].destroy = (Boolean)getObjectParameter(type, x, "destroy");
+				asplodeBubbles[(Integer)x].weight = (Double)getObjectParameter(type, x, "weight");
+				asplodeBubbles[(Integer)x].moving = (Boolean)getObjectParameter(type, x, "moving");
+				asplodeBubbles[(Integer)x].r = (Double)getObjectParameter(type, x, "r");
+				asplodeBubbles[(Integer)x].asploding = (Boolean)getObjectParameter(type, x, "asploding");
+				asplodeBubbles[(Integer)x].isBlocked = (Boolean)getObjectParameter(type, x, "isBlocked");
+				asplodeBubbles[(Integer)x].d = (Double)getObjectParameter(type, x, "d");
+				asplodeBubbles[(Integer)x].rStart = (Double)getObjectParameter(type, x, "rStart");
+			}
 		}
 	}
 	public void loadLevers (Lever[] levers)

@@ -1,0 +1,80 @@
+{
+	"LEVELS" :
+	{
+		1 :
+		{
+			"LEVEL" : 1,
+			"ASPLODE_BUBBLES" :
+			{
+				0 :
+				{
+					"destroy" : false,
+					"d" : 77.00000000000004,
+					"rStart" : 38.72983346207417,
+					"weight" : 15.0,
+					"moving" : false,
+					"r" : 29.692872320923488,
+					"asploding" : true,
+					"y" : 328.06227619516676,
+					"isBlocked" : false,
+					"x" : 245.13333333333333
+				}
+			},
+			"BUBBLES1" :
+			{
+				0 :
+				{
+					"destroy" : false,
+					"weight" : 7.0,
+					"moving" : false,
+					"r" : 13.228756555322953,
+					"asploding" : false,
+					"y" : 118.22875655532295,
+					"isBlocked" : false,
+					"x" : 75.0
+				}
+			},
+			"BLOCKS" :
+			{
+				0 :
+				{
+					"w" : 100,
+					"h" : 10,
+					"y" : 200,
+					"x" : 250
+				},
+				1 :
+				{
+					"w" : 50,
+					"h" : 10,
+					"y" : 100,
+					"x" : 75
+				}
+			},
+			"SLOPED_BLOCKS" :
+			{
+				2 :
+				{
+					"w" : 0,
+					"y1" : 135,
+					"y2" : 80,
+					"x2" : 125,
+					"h" : 0,
+					"x1" : 0
+				}
+			},
+			"PORTALS" :
+			{
+				0 :
+				{
+					"exitX" : 180,
+					"exitY" : 140,
+					"exitW" : 10,
+					"entranceW" : 10,
+					"entranceX" : 150,
+					"entranceY" : 100
+				}
+			}
+		}
+	}
+}
