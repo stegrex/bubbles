@@ -15,7 +15,7 @@ class Game
 	public static Bubble[] bubbles1 = new Bubble[50];
 	public static Bubble[] bubbles2 = new Bubble[50]; // Revisit. Is a second bubble object pool necessary?
 	public static Bubble[] asplodeBubbles = new Bubble[50];
-	//public static Lever[] levers = new Lever[50];
+	public static Lever[] levers = new Lever[50];
 	
 	public Game ()
 	{
@@ -27,6 +27,7 @@ class Game
 		// Create level by positioning elements, based on level index
 		Game.blocks[0] = new Block(200, 200, 100, 10);
 		Game.blocks[1] = new Block(50, 100, 50, 10);
+		Game.levers[0] = new Lever(200, 300, 50, 5, 15);
 	}
 	
 	public static void checkBubblePool () // Revisit. Destruction loop already written in main calculate.
@@ -153,6 +154,15 @@ class Game
 			if (asplodeBubbles[i] != null)
 			{
 				Render.renderAsplodeBubble(asplodeBubbles[i]);
+			}
+		}
+		
+		// Levers
+		for (int i = 0; i < levers.length; i++)
+		{
+			if (levers[i] != null)
+			{
+				Render.renderLever(levers[i]);
 			}
 		}
 		

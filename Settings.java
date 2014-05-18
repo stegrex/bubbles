@@ -13,5 +13,5 @@ class Settings
 	public static int canvasX = 320;
 	public static int canvasY = 480;
 	public static int msPerRender = 4; // Milliseconds per animation rendering.
-	public static int asplodeBubbleRate = 100; // Part of the original radius that gets subtracted every frame. Default 100.
+	public static int asplodeBubbleRate = 150; // Part of the original radius that gets subtracted every frame. Default 150.
 }

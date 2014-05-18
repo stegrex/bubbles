@@ -39,15 +39,13 @@ class Calculate
 		return false;
 	}
 	
-	// Redo. Needs to be mapped to asplode bubble stuff.
 	public static boolean calculateBubbleDestruct (Bubble bubble)
 	{
 		// Redo
 		//if (this.y <= (10+Math.random()*30) || (maxBubbleWeight >= 1 && this.weight >= maxBubbleWeight)) // Asplode the bubble if it's too big, or is leaving the play area.
 		if (bubble.y <= 10 || (Settings.maxBubbleWeight >= 1 && bubble.weight >= Settings.maxBubbleWeight)) // Asplode the bubble if it's too big, or is leaving the play area.
 		{
-			//this.asplodePrepare();
-			bubble.asplode(); // Redo. Using this for now for debug. Should use the bubble's asplode methods.
+			bubble.asplode();
 			return true;
 		}
 		return false;
@@ -57,7 +55,7 @@ class Calculate
 	{
 		if (bubble.r >= bubble.rStart/15)
 		{
-			bubble.d += 0.1;
+			bubble.d += 2.2;
 			bubble.r -= bubble.rStart/Settings.asplodeBubbleRate;
 			bubble.y -= bubble.rStart/Settings.asplodeBubbleRate;
 			/*
@@ -92,6 +90,42 @@ class Calculate
 			return true;
 		}
 		return false;
+	}
+	
+	public static void calculateBubbleLever (Bubble bubble, Lever lever)
+	{
+		bubble.r = Calculate.calculateBubbleRadius(bubble);
+		if ((bubble.x >= lever.x && bubble.x <= lever.x+lever.w/2) && (bubble.y >= lever.y+lever.h+bubble.r && bubble.y <= lever.y+lever.h+bubble.r+2))
+		{
+			if (bubble.moving)
+			{
+				lever.rightWeight += bubble.weight;
+			}
+			//returnVal = [x, y];
+		}
+		else if ((bubble.x >= lever.x-lever.w/2 && bubble.x <= lever.x) && (bubble.y >= lever.y+lever.h+bubble.r && bubble.y <= lever.y+lever.h+bubble.r+2))
+		{
+			if (bubble.moving)
+			{
+				lever.leftWeight += bubble.weight;
+			}
+			//returnVal = [x, y];
+		}
+		if (Math.abs(lever.leftWeight-lever.rightWeight) >= lever.inertia/2)
+		{
+			if (lever.leftWeight-lever.rightWeight > 0)
+			{
+				lever.angle = 1;
+			}
+			else
+			{
+				lever.angle = -1;
+			}
+		}
+		if (Math.abs(lever.leftWeight-lever.rightWeight) >= lever.inertia)
+		{
+			lever.angle *= 2;
+		}
 	}
 	
 }

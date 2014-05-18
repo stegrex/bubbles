@@ -1,15 +1,21 @@
-2012-09-18a
+2012-09-18b
 
 Changes:
 
 Game:
-- Added new loop for handling Bubbles objects with the asploding property.
+- Added rendering of levers.
 
 Calculate:
-- Added calculation methods between different bubble types.
+- Added way to calculate levers with bubbles.
+
+Lever:
+- Added Lever class.
 
 Render:
-- Added rendering for asploding Bubbles.
+- Added rendering for levers.
 
 View:
-- Added draw methods for asploding Bubbles.
+- Used rotation transformations on levers (not what I expected but it
+could be a new game mechanic).
+
+Notes: The lever rotation by itself is not what's supposed to happen.
