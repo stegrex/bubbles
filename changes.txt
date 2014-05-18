@@ -1,9 +1,11 @@
-2013-03-11
+2013-03-17
 
-Added KeyInput class to handle keyboard inputs (mainly for pausing).
+Added methods for serializing the game pool into JSON.
 
 Class: Game
-- Added handling of keyboard typing of key "p" which pauses the game.
+- Added new save() method that will open a new save game, add the elements, then commit the save game.
 
-Class: ViewGraphics
-- When game is paused, the colors for the main game components change to gray, giving a visual indicator that the game is paused.
+Class: GameLevel
+- Added new methods that accept arrays of game elements and serializes the elements into a JSON format that will make it easier to load the elements later.
+- Typing key "s" will currently output the JSON into stdout for debugging.
+- Eventually, the JSON string will be serialized into the savegames file where the game instances can be loaded.

@@ -80,6 +80,19 @@ class Game
 		this.gameLevel.loadLevers(this.gamePool.levers);
 	}
 	
+	public void save (int saveSlot)
+	{
+		this.gameLevel.createNewGameSave(saveSlot);
+		this.gameLevel.savePortals(this.gamePool.portals);
+		this.gameLevel.saveBlocks(this.gamePool.blocks);
+		this.gameLevel.saveSlopedBlocks(this.gamePool.slopedBlocks);
+		this.gameLevel.saveBubbles1(this.gamePool.bubbles1);
+		this.gameLevel.saveBubbles2(this.gamePool.bubbles2);
+		this.gameLevel.saveAsplodeBubbles(this.gamePool.asplodeBubbles);
+		this.gameLevel.saveLevers(this.gamePool.levers);
+		this.gameLevel.commitGameSave();
+	}
+	
 	public void unload ()
 	{
 		this.gamePool.unload();
@@ -199,6 +212,10 @@ class Game
 					this.gameRunning = true;
 					this.view.setUnPause();
 				}
+				break;
+			// S for Save
+			case 's':
+				this.save(0);
 				break;
 			default:
 				break;
