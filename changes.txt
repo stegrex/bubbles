@@ -1,11 +1,10 @@
-2013-03-17
+2013-03-19
 
-Added methods for serializing the game pool into JSON.
+Added handling of booleans in BubblesJSONObject and BubblesJSONParser.
 
-Class: Game
-- Added new save() method that will open a new save game, add the elements, then commit the save game.
+Class: BubblesJSONParser
+- Added new property type for booleans.
+- Modified methods to handle parsing true and false boolean types.
 
-Class: GameLevel
-- Added new methods that accept arrays of game elements and serializes the elements into a JSON format that will make it easier to load the elements later.
-- Typing key "s" will currently output the JSON into stdout for debugging.
-- Eventually, the JSON string will be serialized into the savegames file where the game instances can be loaded.
+Class: BubblesJSONObject
+- Added boolean casting to render booleans to "true" and "false" strings.
