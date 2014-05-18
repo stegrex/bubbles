@@ -1,3 +1,6 @@
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 class GameLoop
 {
 	
@@ -11,6 +14,7 @@ class GameLoop
 	public boolean gameRunning;
 	
 	public Render render;
+	public static MouseInput mouseInput;
 	
 	public GameLoop ()
 	{
@@ -19,7 +23,8 @@ class GameLoop
 		Game.dumpGameState();
 		
 		this.render = new Render();
-		
+		this.mouseInput = new MouseInput();
+		this.render.addMouseInput(mouseInput);
 	}
 	
 	public void loop ()
@@ -58,6 +63,12 @@ class GameLoop
 			}
 		}
 		
+	}
+	
+	public static void handleMouseClicked (int x, int y)
+	{
+		System.out.println(x+"::"+y);
+		Game.createBubble(x, y);
 	}
 	
 	private void calculate (double delta)

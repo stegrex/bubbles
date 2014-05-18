@@ -29,15 +29,34 @@ class Game
 		Game.blocks[1] = new Block(50, 100, 50, 10);
 	}
 	
+	public static void checkBubblePool ()
+	{
+	}
+	
+	public static void createBubble (int x, int y)
+	{
+		// Debug
+		int numBubbles = 0;
+		// Debug
+		for (int i = 0; i < bubbles1.length; i++)
+		{
+			if (bubbles1[i] == null)
+			{
+				bubbles1[i] = new Bubble(x, y);
+				break;
+			}
+		}
+		System.out.println(numBubbles);
+	}
+	
 	public static void calculate ()
 	{
 		// Iterate through the object pool and call the correct interact context between object types.
-		for (int x = 0; x < blocks.length; x++)
+		for (int i = 0; i < bubbles1.length; i++)
 		{
-			if (blocks[x] != null)
+			if (bubbles1[i] != null)
 			{
-				//blocks[x] = Calculate.calculateBlock(blocks[x]);
-				Calculate.calculateBlock(blocks[x]);
+				Calculate.calculateBubble(bubbles1[i]);
 			}
 		}
 		
@@ -49,11 +68,19 @@ class Game
 		//Render.render();
 		Render.clear();
 		
-		for (int x = 0; x < blocks.length; x++)
+		for (int i = 0; i < blocks.length; i++)
 		{
-			if (blocks[x] != null)
+			if (blocks[i] != null)
 			{
-				Render.renderBlock(blocks[x]);
+				Render.renderBlock(blocks[i]);
+			}
+		}
+		
+		for (int i = 0; i < bubbles1.length; i++)
+		{
+			if (bubbles1[i] != null)
+			{
+				Render.renderBubble(bubbles1[i]);
 			}
 		}
 		

@@ -1,34 +1,24 @@
-2012-09-10
+2012-09-13
 
-Main:
-Instantiates GameLoop.
+Not much different from before, but I made some modifications so that
+bubbles can now be created.
 
-GameLoop:
-Loads the Game.
-Method loop() starts the main game timer (stole this from someone
-else's blog), which calls the methods calculate() and render() from
-Game.
+Class: MouseInput
+- Handles all of the mouse inputs.
+- Instantiated at GameLoop and propagates through Render, into class
+Render's static instance of the View (since JPanel uses the listener
+and View is the JPanel in this case).
+- On mouse button release, calls the Game class for its createBubble() method.
 
-Game:
-Loads the Object Pools (arrays of objects). Currently loads two Blocks.
-Method calculate() iterates each object's state in each Object Pool by
-1 game frame, using the contextual methods in class Calculate.
-Method render() generates a set of GeneralPaths for each object, using
-the contextual render mapping methods in class Render.
+Class: Game
+- Added method createBubble(). The method adds an instance of a Bubble
+into the bubbles1 array (I haven't yet coded destructors so once 50
+bubbles have been created, the array will be full).
 
-Calculate:
-Holds static methods for calculations and manipulations of object
-states depending on object types.
+Class: Calculate
+- Added method calculateBubble() that calculates the new position of
+any bubble and updates the object, per game frame.
 
-Render:
-Loads JFrame.
-Holds game's JPanel.
-Contains methods for clearing and repainting the JPanel (not sure how
-this works, but I got it to work).
-Holds methods for generating GeneralPaths (using any object type) into
-the JPanel.
-
-View:
-Extends JPanel.
-Provides some interfaces for accepting GeneralPaths from the outside.
-Contains some other useful utilities for getting it to work.
+Class: Render
+- Added method renderBubble() that pushes the GeneralPath into the
+view to be processed and drawn per frame.
