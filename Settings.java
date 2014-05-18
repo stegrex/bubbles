@@ -1,4 +1,3 @@
-
 class Settings
 {
 	public static int msPerRender = 4; // Milliseconds per animation rendering.

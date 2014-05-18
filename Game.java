@@ -17,12 +17,13 @@ class Game
 	public View view;
 	
 	public static Block[] blocks = new Block[50];
+	public static SlopedBlock[] slopedBlocks = new SlopedBlock[50];
 	public static Bubble[] bubbles1 = new Bubble[50];
 	public static Bubble[] bubbles2 = new Bubble[50]; // Revisit. Is a second bubble object pool necessary?
 	public static Bubble[] asplodeBubbles = new Bubble[50];
 	public static Lever[] levers = new Lever[50];
 	
-	public static double delta = 0; // Delta value for multiplication to every distance calculation per game frame.
+	//public static double delta = 0; // Delta value for multiplication to every distance calculation per game frame.
 	
 	public Game ()
 	{
@@ -36,11 +37,13 @@ class Game
 		// Create level by positioning elements, based on level index
 		Game.blocks[0] = new Block(200, 200, 100, 10);
 		Game.blocks[1] = new Block(50, 100, 50, 10);
-		Game.levers[0] = new Lever(200, 300, 50, 5, 15);
-		Game.levers[0].angle = 45; // Debug.
+		Game.slopedBlocks[0] = new SlopedBlock(150, 300, 250, 250, 0, 0); // Revisit. Last two params necessary?
+		Game.slopedBlocks[1] = new SlopedBlock(75, 150, 150, 250, 0, 0); // Revisit. Last two params necessary?
+		//Game.levers[0] = new Lever(200, 300, 50, 5, 15);
+		//Game.levers[0].angle = 45; // Debug.
 		
-		Game.levers[1] = new Lever(100, 200, 50, 5, 15);
-		Game.levers[1].angle = 0; // Debug.
+		//Game.levers[1] = new Lever(100, 200, 50, 5, 15);
+		//Game.levers[1].angle = 0; // Debug.
 	}
 	
 	public void addMouseInput (MouseInput mouseInput)
@@ -84,25 +87,26 @@ class Game
 		}
 	}
 	
-	public void calculate ()
+	public void calculate (double delta)
 	{
 		// Iterate through the object pool and call the correct interact context between object types.
-		
+		this.calculate.setDelta(delta);
 		// Iterate through bubbles object pool.
 		for (int i = 0; i < Game.bubbles1.length; i++)
 		{
 			if (Game.bubbles1[i] != null)
 			{
+				boolean combined = false;
 				boolean updated = false;
 				// Calculate bubble - bubble.
-				for (int i2 = 0; i2 < Game.bubbles1.length; i2++)
+				for (int n = 0; n < Game.bubbles1.length; n++)
 				{
-					if (Game.bubbles1[i2] != null && Game.bubbles1[i] != Game.bubbles1[i2])
+					if (Game.bubbles1[n] != null && Game.bubbles1[i] != Game.bubbles1[n])
 					{
-						if (this.calculate.calculateBubbleBubble(Game.bubbles1[i], Game.bubbles1[i2]) == true)
+						combined = this.calculate.calculateBubbleBubble(Game.bubbles1[i], Game.bubbles1[n]);
+						if (combined == true)
 						{
-							updated = true;
-							Game.bubbles1[i2] = null;
+							Game.bubbles1[n] = null;
 						}
 					}
 				}
@@ -118,6 +122,23 @@ class Game
 						}
 					}
 				}
+				///*
+				// Calculate bubble - sloped block.
+				if (updated == false)
+				{
+					for (int n = 0; n < Game.slopedBlocks.length; n++)
+					{
+						if (this.slopedBlocks[n] != null)
+						{
+							updated = this.calculate.calculateBubbleSlopedBlock(Game.bubbles1[i], Game.slopedBlocks[n]);
+							if (updated == true)
+							{
+								break;
+							}
+						}
+					}
+				}
+				//*/
 				// Calculate asplode buddle.
 				if (this.calculate.calculateBubbleDestruct(Game.bubbles1[i]) == true)
 				{
@@ -153,6 +174,7 @@ class Game
 		//this.view.clear();
 		
 		this.view.setBlocks(this.blocks);
+		this.view.setSlopedBlocks(this.slopedBlocks);
 		this.view.setBubbles1(this.bubbles1);
 		this.view.setAsplodeBubbles(this.asplodeBubbles);
 		this.view.setLevers(this.levers);

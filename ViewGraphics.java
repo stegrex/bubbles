@@ -13,16 +13,17 @@ class ViewGraphics extends JPanel
 	
 	public Render render = new Render();
 	
-	//public static Block[] blocks = new Block[50];
-	public static Block[] blocks;
-	public static Bubble[] bubbles1;
-	public static Bubble[] bubbles2;
-	public static Bubble[] asplodeBubbles;
-	public static Lever[] levers;
+	public Block[] blocks;
+	public SlopedBlock[] slopedBlocks;
+	public Bubble[] bubbles1;
+	public Bubble[] bubbles2;
+	public Bubble[] asplodeBubbles;
+	public Lever[] levers;
 	
 	public GeneralPath[] paths = new GeneralPath[500];
 	
 	public GeneralPath blocksPath = new GeneralPath();
+	public GeneralPath slopedBlocksPath = new GeneralPath();
 	public GeneralPath bubblesPath = new GeneralPath();
 	public GeneralPath asplodeBubblesPath1 = new GeneralPath();
 	public GeneralPath asplodeBubblesPath2 = new GeneralPath();
@@ -36,7 +37,7 @@ class ViewGraphics extends JPanel
 	public boolean antialias;
 	
 	/*
-	public void clear ()
+	public void clear () // Redo. Unnecessary.
 	{
 		for (int x = 0 ; x < this.paths.length; x++) // Redo. Can recycle the paths array in the main paintComponent method.
 		{
@@ -70,6 +71,14 @@ class ViewGraphics extends JPanel
 			if (this.blocks[x] != null)
 			{
 				this.g2d.draw(this.render.renderBlock(this.blocks[x]));
+			}
+		}
+		this.g2d.setPaint(Color.CYAN);
+		for (int x = 0; (this.slopedBlocks != null && x < this.slopedBlocks.length); x++)
+		{
+			if (this.slopedBlocks[x] != null)
+			{
+				this.g2d.draw(this.render.renderSlopedBlock(this.slopedBlocks[x]));
 			}
 		}
 		this.g2d.setPaint(Color.CYAN);

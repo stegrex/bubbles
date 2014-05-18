@@ -1,25 +1,14 @@
-2012-09-29
+2012-10-14
 
-Refactored the way rendering is done.
+Built new SlopedBlock class and implementations.
 
-Class: Game
-- Now contains an instance of class View.
-- Render method now mapped to new View methods.
-- The Game class should handle the data calculation side, but not too
-much of the render logic.
+Class: Game, Calculate
+- Now contains handling for the SlopedBlock objects.
 
-Class: View (Formerly Render)
-- The View class now contains an instance of ViewGraphics (formerly View).
-- The purpose of the class is to provide an interface between the Game
-and the Graphics.
-- New methods simply pass the Game's object pool arrays to the
-ViewGraphics object.
+Class: View, ViewGraphics, Render
+-  Now contains handling for the SlopedBlock objects.
 
-Class: ViewGraphics
-- Handles the object pool by calling the Render class's methods to
-return GeneralPaths to draw.
-
-Class: Render
-- Contains all the old Render class's methods.
-- Uses render methods to return instances of GeneralPaths for the
-ViewGraphics class to handle.
+Class: SlopedBlock
+- New class allows for bubbles to glide on the sloped surface.
+- Implementation for calculation of interactions between SlopedBlock
+and Bubble objects is still being refined.

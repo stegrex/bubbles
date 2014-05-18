@@ -4,7 +4,7 @@ import java.awt.event.MouseListener;
 class MouseInput implements MouseListener
 {
 	
-	public UserInput userInput;
+	//public UserInput userInput;
 	
 	//public MouseInput (String inputType)
 	//{

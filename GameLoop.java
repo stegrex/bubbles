@@ -46,7 +46,7 @@ class GameLoop
 			
 			double delta = updateLength/(double)timePerRender;
 			
-			this.setDelta(delta);
+			//this.setDelta(delta);
 			this.calculate(delta);
 			
 			calcCount++;
@@ -58,24 +58,30 @@ class GameLoop
 			
 			try
 			{
+				//System.out.println(lastLoopTime-System.nanoTime()+timePerRender); // Debug
 				Thread.sleep((lastLoopTime-System.nanoTime() + timePerRender)/1000000);
+				//Thread.sleep(timePerRender/1000000); // Debug.
 			}
 			catch (Exception e)
 			{
 				this.loop();
 			}
+			
 		}
 	}
 	
-	private void setDelta (double delta)
+	/*
+	private void setDelta (double delta) // Revisit. Unnecesary.
 	{
 		this.game.delta = delta;
+		//this.game.delta = 1; // Debug.
 	}
+	*/
 	
 	private void calculate (double delta)
 	{
 		// Calculate the states of all the objects in the object pool.
-		this.game.calculate();
+		this.game.calculate(delta);
 	}
 	
 	private void render (double delta)

@@ -51,6 +51,10 @@ class View
 	{
 		this.viewGraphics.blocks = blocks;
 	}
+	public void setSlopedBlocks (SlopedBlock[] slopedBlocks)
+	{
+		this.viewGraphics.slopedBlocks = slopedBlocks;
+	}
 	public void setBubbles1 (Bubble[] bubbles1)
 	{
 		this.viewGraphics.bubbles1 = bubbles1;

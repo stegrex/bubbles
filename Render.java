@@ -1,8 +1,4 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+//import java.awt.Graphics;
 import java.awt.geom.GeneralPath;
 	import java.awt.geom.Arc2D;
 	import java.awt.Rectangle;
@@ -58,13 +54,22 @@ class Render
 		return path;
 	}
 	
+	public GeneralPath renderSlopedBlock (SlopedBlock slopedBlock)
+	{
+		// Redo. Look at GeneralPath method append()
+		GeneralPath path = new GeneralPath();
+		path.moveTo(slopedBlock.x1, slopedBlock.y1);
+		path.lineTo(slopedBlock.x2, slopedBlock.y2);
+		return path;
+	}
+	
 	public GeneralPath renderBubble (Bubble bubble) // Pass in different Object types to be rendered.
 	{
 		// Revisit. Add random x motion if bubble is moving.
 		//Shape bubbleShape = new Arc2D.Double();
 		GeneralPath path = new GeneralPath();
 		path.append(new Arc2D.Double(bubble.x-bubble.r, bubble.y-bubble.r, bubble.r*2, bubble.r*2, 0, 360, Arc2D.OPEN), false);
-		path.append(new Arc2D.Double(bubble.x-bubble.r+0.25, bubble.y-bubble.r+0.25, bubble.r*2-0.5, bubble.r*2-0.5, 0, 360, Arc2D.OPEN), false); // Revisit. Making bubble line thicker.
+		//path.append(new Arc2D.Double(bubble.x-bubble.r+0.25, bubble.y-bubble.r+0.25, bubble.r*2-0.5, bubble.r*2-0.5, 0, 360, Arc2D.OPEN), false); // Revisit. Making bubble line thicker.
 		return path;
 	}
 	
