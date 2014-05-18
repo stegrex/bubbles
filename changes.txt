@@ -1,13 +1,9 @@
-2013-02-18
+2013-03-11
 
-Added the BubblesJSONObject and BubblesJSONParser classes to handle serialization/deserialization of game states into a subset of JSON for portable storage into files.
+Added KeyInput class to handle keyboard inputs (mainly for pausing).
 
-Class: GameLevel
-- Added instance of BubblesJSONParser to read the levels file (JSON format) and parse into BubblesJSONObject data structures.
-- Added handling and injection of game objects into the object pool using the JSON data from the levels file.
+Class: Game
+- Added handling of keyboard typing of key "p" which pauses the game.
 
-Class: BubblesJSONParser
-- Completed parser class which reads in a string of JSON and can return BubblesJSONObject instances.
-
-Class: BubblesJSONObject
-- Data structure that holds instances of HashMap and ArrayList to handle JSON-based data dynamically, across different data types.
+Class: ViewGraphics
+- When game is paused, the colors for the main game components change to gray, giving a visual indicator that the game is paused.

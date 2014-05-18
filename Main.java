@@ -11,12 +11,15 @@ class Main
 	
 	public static GameLoop gameLoop;
 	public static MouseInput mouseInput;
+	public static KeyInput keyInput;
 	
 	public static void main (String args[])
 	{
 		Main.gameLoop = new GameLoop();
 		Main.mouseInput = new MouseInput();
+		Main.keyInput = new KeyInput();
 		Main.gameLoop.addMouseInput(Main.mouseInput);
+		Main.gameLoop.addKeyInput(Main.keyInput);
 		Main.gameLoop.loop();
 	}
 	
@@ -35,6 +38,11 @@ class Main
 	public static void handleMouseDrag (int x, int y)
 	{
 		Main.gameLoop.handleMouseDrag(x, y);
+	}
+	
+	public static void handleKeyType (char key)
+	{
+		Main.gameLoop.handleKeyType(key);
 	}
 	
 }

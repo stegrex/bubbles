@@ -18,7 +18,7 @@ class Settings
 	public static int msPerRender = 4; // Milliseconds per animation rendering.
 	public static int gameMode = 1;
 	public static int autoShoot = 0; // Shoots a bunch of bubbles randomly if set to 1. Default 0.
-	public static boolean runSplashDemo = true;
+	public static boolean runSplashDemo = false;
 	
 	// Object settings
 	

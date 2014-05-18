@@ -27,7 +27,6 @@ class GameLoop
 	{
 		this.game.addMouseInput(mouseInput);
 	}
-	
 	public void handleMousePress (int x, int y)
 	{
 		if (this.game.gameRunning == true)
@@ -55,6 +54,15 @@ class GameLoop
 		{
 			this.game.handleMouseDrag(x, y);
 		}
+	}
+	
+	public void addKeyInput (KeyInput keyInput)
+	{
+		this.game.addKeyInput(keyInput);
+	}
+	public void handleKeyType (char key)
+	{
+		this.game.handleKeyType(key);
 	}
 	
 	public void loop ()

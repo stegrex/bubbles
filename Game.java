@@ -150,7 +150,6 @@ class Game
 	{
 		this.view.addMouseInput(mouseInput);
 	}
-	
 	// Revisit. Possibly put the UI methods into its own class.
 	public void handleMousePress (int x, int y)
 	{
@@ -176,6 +175,33 @@ class Game
 		if (this.lastPressedButton == MouseEvent.BUTTON1)
 		{
 			this.gamePool.turnOnReticle(x);
+		}
+	}
+	
+	public void addKeyInput (KeyInput keyInput)
+	{
+		this.view.addKeyInput(keyInput);
+	}
+	public void handleKeyType (char key)
+	{
+		switch (key)
+		{
+			// P for Pause
+			case 'p':
+				if (this.gameRunning == true)
+				{
+					this.gameRunning = false;
+					this.view.setPause();
+					this.render();
+				}
+				else
+				{
+					this.gameRunning = true;
+					this.view.setUnPause();
+				}
+				break;
+			default:
+				break;
 		}
 	}
 	

@@ -24,6 +24,8 @@ class View
 		JFrame frame = new JFrame("Bubbles");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.viewGraphics = new ViewGraphics();
+		this.viewGraphics.setFocusable(true); // Debug
+		this.viewGraphics.requestFocusInWindow(); // Debug
 		frame.add(this.viewGraphics);
 		frame.setSize(Settings.canvasX, Settings.canvasY);
 		frame.setVisible(true);
@@ -33,6 +35,20 @@ class View
 	{
 		this.viewGraphics.addMouseListener(mouseInput);
 		this.viewGraphics.addMouseMotionListener(mouseInput);
+	}
+	
+	public void addKeyInput (KeyInput keyInput)
+	{
+		this.viewGraphics.addKeyListener(keyInput);
+	}
+	
+	public void setPause ()
+	{
+		this.viewGraphics.pause = true;
+	}
+	public void setUnPause ()
+	{
+		this.viewGraphics.pause = false;
 	}
 	
 	public void redraw ()

@@ -13,6 +13,8 @@ class ViewGraphics extends JPanel
 	
 	public Render render = new Render();
 	
+	public boolean pause;
+	
 	public Reticle reticle;
 	public Portal[] portals;
 	public Block[] blocks;
@@ -39,7 +41,7 @@ class ViewGraphics extends JPanel
 		this.setBackground(Color.BLACK); // Set background color.
 		
 		// Handle static objects that can be processed in a single pool.
-		this.g2d.setPaint(Color.RED);
+		this.g2d.setPaint(this.pause == true ? Color.LIGHT_GRAY : Color.RED);
 		for (int x = 0; (this.portals != null && x < this.portals.length); x++)
 		{
 			if (this.portals[x] != null)
@@ -55,7 +57,7 @@ class ViewGraphics extends JPanel
 				this.g2d.draw(this.render.renderBlock(this.blocks[x]));
 			}
 		}
-		this.g2d.setPaint(Color.CYAN);
+		this.g2d.setPaint(this.pause == true ? Color.LIGHT_GRAY : Color.CYAN);
 		for (int x = 0; (this.slopedBlocks != null && x < this.slopedBlocks.length); x++)
 		{
 			if (this.slopedBlocks[x] != null)
@@ -63,7 +65,7 @@ class ViewGraphics extends JPanel
 				this.g2d.draw(this.render.renderSlopedBlock(this.slopedBlocks[x]));
 			}
 		}
-		this.g2d.setPaint(Color.CYAN);
+		this.g2d.setPaint(this.pause == true ? Color.LIGHT_GRAY : Color.CYAN);
 		for (int x = 0; (this.bubbles1 != null && x < this.bubbles1.length); x++)
 		{
 			if (this.bubbles1[x] != null)
@@ -75,17 +77,17 @@ class ViewGraphics extends JPanel
 		{
 			if (this.asplodeBubbles[x] != null)
 			{
-				this.g2d.setPaint(Color.CYAN);
+				this.g2d.setPaint(this.pause == true ? Color.LIGHT_GRAY : Color.CYAN);
 				this.g2d.draw(this.render.renderAsplodeBubble1(this.asplodeBubbles[x]));
-				this.g2d.setPaint(Color.CYAN);
+				this.g2d.setPaint(this.pause == true ? Color.LIGHT_GRAY : Color.CYAN);
 				this.g2d.draw(this.render.renderAsplodeBubble2(this.asplodeBubbles[x]));
-				this.g2d.setPaint(Color.WHITE);
+				this.g2d.setPaint(this.pause == true ? Color.LIGHT_GRAY : Color.WHITE);
 				this.g2d.draw(this.render.renderAsplodeBubble3(this.asplodeBubbles[x]));
 			}
 		}
 		
 		// Handle non static objects that need to be processed individually.
-		this.g2d.setPaint(Color.CYAN);
+		this.g2d.setPaint(this.pause == true ? Color.LIGHT_GRAY : Color.CYAN);
 		for (int x = 0; (this.levers != null && x < this.levers.length); x++)
 		{
 			if (this.levers[x] != null)
