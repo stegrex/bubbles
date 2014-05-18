@@ -1,14 +1,13 @@
-2012-10-14
+2012-10-19a
 
-Built new SlopedBlock class and implementations.
+Updated SlopedBlock calculation
 
-Class: Game, Calculate
-- Now contains handling for the SlopedBlock objects.
-
-Class: View, ViewGraphics, Render
--  Now contains handling for the SlopedBlock objects.
-
-Class: SlopedBlock
-- New class allows for bubbles to glide on the sloped surface.
-- Implementation for calculation of interactions between SlopedBlock
-and Bubble objects is still being refined.
+Class: Calculate
+- Edited method calculateBubbleSlopedBlock by adding calculation
+bubbleSpeedRatio.
+- Bubble speed ratio is defined by the slope's rise/(rise+run), so a
+vertical line's ratio would be 1, horizontal line's ratio would be 0,
+and line of slope 1 would have ratio of 0.5
+- Calculation bubbleSpeedRatio is then multiplied to the horizontal
+movement along the slope, which simulates slower movement when the
+slope is more horizontal.

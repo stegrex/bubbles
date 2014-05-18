@@ -1,3 +1,5 @@
+//package stegrex.bubbles.game;
+
 class Calculate
 {
 	
@@ -103,12 +105,17 @@ class Calculate
 		if (bubble.x >= slopedBlock.x1 && bubble.x <= slopedBlock.x2)
 		{
 			
-			//System.out.println(bubble.y+" :: "+(slope*bubble.x+lineConstant+bubble.r*Math.sqrt(Math.pow(slope, 2)+1)+Settings.bubbleSpeed*this.delta)); // Debug
+			//System.out.println(slope); // Debug
 			if (bubble.y < (slope*bubble.x+lineConstant+bubble.r*Math.sqrt(Math.pow(slope, 2)+1)+Settings.bubbleSpeed*this.delta) && bubble.y >= (slope*bubble.x+lineConstant+bubble.r*Math.sqrt(Math.pow(slope, 2)+1)-bubble.r))
 			//if (bubble.y <= (slope*bubble.x+lineConstant+bubble.r*Math.sqrt(Math.pow(slope, 2)+1)+Settings.bubbleSpeed*this.delta))
 			{
+				double bubbleSpeedRatio = (double)(slopedBlock.y2-slopedBlock.y1)/(Math.abs(slopedBlock.y2-slopedBlock.y1)+Math.abs(slopedBlock.x2-slopedBlock.x1));
+				//System.out.println(bubbleSpeedRatio+" :: "+slope); // Debug
 				// REDO!
-				bubble.x = slope > 0 ? bubble.x-0.25*this.delta : (slope < 0 ? bubble.x+0.25*this.delta : bubble.x); // Debug
+				//bubble.x = slope > 0 ? bubble.x+perpendicularSlope*Settings.bubbleSpeed*this.delta : (slope < 0 ? bubble.x+perpendicularSlope*Settings.bubbleSpeed*this.delta : bubble.x); // Debug
+				if (bubbleSpeedRatio != 0) {
+					bubble.x = bubble.x-Settings.bubbleSpeed*bubbleSpeedRatio*this.delta;
+				}
 				bubble.y = slope*bubble.x+lineConstant+bubble.r*Math.sqrt(Math.pow(slope, 2)+1);
 				bubble.moving = false;
 				return true;

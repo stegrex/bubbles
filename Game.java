@@ -1,3 +1,5 @@
+//package stegrex.bubbles.game;
+
 class Game
 {
 	
@@ -37,8 +39,15 @@ class Game
 		// Create level by positioning elements, based on level index
 		Game.blocks[0] = new Block(200, 200, 100, 10);
 		Game.blocks[1] = new Block(50, 100, 50, 10);
-		Game.slopedBlocks[0] = new SlopedBlock(150, 300, 250, 250, 0, 0); // Revisit. Last two params necessary?
-		Game.slopedBlocks[1] = new SlopedBlock(75, 150, 150, 250, 0, 0); // Revisit. Last two params necessary?
+		//Game.slopedBlocks[0] = new SlopedBlock(150, 300, 250, 250, 0, 0); // Revisit. Last two params necessary?
+		//Game.slopedBlocks[1] = new SlopedBlock(75, 150, 150, 250, 0, 0); // Revisit. Last two params necessary?
+		
+		Game.slopedBlocks[0] = new SlopedBlock(150, 300, 250, 290, 0, 0); // Revisit. Last two params necessary?
+		Game.slopedBlocks[1] = new SlopedBlock(10, 200, 150, 250, 0, 0); // Revisit. Last two params necessary?
+		Game.slopedBlocks[2] = new SlopedBlock(0, 135, 125, 80, 0, 0);
+		Game.slopedBlocks[3] = new SlopedBlock(150, 200, 300, 300, 0, 0);
+		
+		
 		//Game.levers[0] = new Lever(200, 300, 50, 5, 15);
 		//Game.levers[0].angle = 45; // Debug.
 		

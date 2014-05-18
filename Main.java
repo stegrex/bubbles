@@ -1,3 +1,5 @@
+//package stegrex.bubbles.game;
+
 class Main
 {
 	

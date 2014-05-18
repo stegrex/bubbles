@@ -1,3 +1,5 @@
+//package stegrex.bubbles.view;
+
 //import java.awt.Graphics;
 import java.awt.geom.GeneralPath;
 	import java.awt.geom.Arc2D;
