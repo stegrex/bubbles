@@ -1,0 +1,34 @@
+2012-09-10
+
+Main:
+Instantiates GameLoop.
+
+GameLoop:
+Loads the Game.
+Method loop() starts the main game timer (stole this from someone
+else's blog), which calls the methods calculate() and render() from
+Game.
+
+Game:
+Loads the Object Pools (arrays of objects). Currently loads two Blocks.
+Method calculate() iterates each object's state in each Object Pool by
+1 game frame, using the contextual methods in class Calculate.
+Method render() generates a set of GeneralPaths for each object, using
+the contextual render mapping methods in class Render.
+
+Calculate:
+Holds static methods for calculations and manipulations of object
+states depending on object types.
+
+Render:
+Loads JFrame.
+Holds game's JPanel.
+Contains methods for clearing and repainting the JPanel (not sure how
+this works, but I got it to work).
+Holds methods for generating GeneralPaths (using any object type) into
+the JPanel.
+
+View:
+Extends JPanel.
+Provides some interfaces for accepting GeneralPaths from the outside.
+Contains some other useful utilities for getting it to work.

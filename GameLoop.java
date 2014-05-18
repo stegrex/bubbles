@@ -1,0 +1,76 @@
+class GameLoop
+{
+	
+	// Game
+	
+	// GameLoop holds:
+		// The main timer
+		// The frontend
+		// Methods to call the game's Object Pool
+	
+	public boolean gameRunning;
+	
+	public Render render;
+	
+	public GameLoop ()
+	{
+		
+		Game.load();
+		Game.dumpGameState();
+		
+		this.render = new Render();
+		
+	}
+	
+	public void loop ()
+	{
+		
+		long lastLoopTime = System.nanoTime();
+		final int targetFPS = 300;
+		final long timePerRender = 1000000000/targetFPS;
+		int calcCount = 0;
+		
+		while (this.gameRunning == true)
+		{
+			long now = System.nanoTime();
+			long updateLength = now - lastLoopTime;
+			lastLoopTime = now;
+			
+			double delta = updateLength/(double)timePerRender;
+			
+			this.calculate(delta);
+			
+			calcCount++;
+			if (calcCount == Settings.msPerRender)
+			//if (calcCount == 1000)
+			{
+				this.render(delta);
+				calcCount = 0;
+			}
+			
+			try
+			{
+				Thread.sleep((lastLoopTime-System.nanoTime() + timePerRender)/1000000);
+			}
+			catch (Exception e)
+			{
+				this.loop();
+			}
+		}
+		
+	}
+	
+	private void calculate (double delta)
+	{
+		// Calculate the states of all the objects in the object pool.
+		Game.calculate();
+	}
+	
+	private void render (double delta)
+	{
+		Game.render();
+		//System.out.println(delta);
+		// Do the render to the display.
+	}
+	
+}
