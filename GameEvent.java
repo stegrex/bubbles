@@ -4,7 +4,10 @@ class GameEvent
 	public enum Type
 	{
 		SPLASH_DEMO,
-		DEBUG_PAUSE
+		
+		// Debug
+		DEBUG_PAUSE,
+		DEBUG_RESUME
 	};
 	
 	public Type command;

@@ -1,14 +1,13 @@
-2012-12-26
+2013-02-18
 
-Added new GameEvent class for handling event queues. Preparation for refactoring.
+Added the BubblesJSONObject and BubblesJSONParser classes to handle serialization/deserialization of game states into a subset of JSON for portable storage into files.
 
-Class: Game
-- Added code for handling new GameEvent types.
-- Moved Splash Demo Screen to be a GameEvent type.
+Class: GameLevel
+- Added instance of BubblesJSONParser to read the levels file (JSON format) and parse into BubblesJSONObject data structures.
+- Added handling and injection of game objects into the object pool using the JSON data from the levels file.
 
-Class: GameEvent
-- Added new class.
-- Not really multithreading, but allows for quick and easy way to schedule events that don't require extreme granularity (depends on whenever the game frame update picks it up).
+Class: BubblesJSONParser
+- Completed parser class which reads in a string of JSON and can return BubblesJSONObject instances.
 
-Class: GamePool
-- Added new class to get ready for refactoring anything related to the gamepool from the Game class.
+Class: BubblesJSONObject
+- Data structure that holds instances of HashMap and ArrayList to handle JSON-based data dynamically, across different data types.

@@ -14,7 +14,7 @@ class GameLoop
 	
 	double lastDelta = 0;
 	
-	public boolean gameRunning;
+	//public boolean gameRunning; // Revisit. Needed?
 	
 	public GameLoop ()
 	{
@@ -64,7 +64,7 @@ class GameLoop
 		final long timePerRender = 1000000000/targetFPS;
 		int calcCount = 0;
 		
-		while (this.game.gameRunning == true)
+		while (this.game.gameRunning == true || this.game.eventPolling == true)
 		{
 			long now = System.nanoTime();
 			long updateLength = now - lastLoopTime;
@@ -73,7 +73,7 @@ class GameLoop
 			double lastDelta = this.lastDelta;
 			double delta = updateLength/(double)timePerRender;
 			
-			if (Settings.autoShoot == 1)
+			if (this.game.gameRunning == true && Settings.autoShoot == 1)
 			{
 				for (int x = 0; x < 100; x++)
 				{
@@ -83,11 +83,14 @@ class GameLoop
 			
 			this.lastDelta = delta;
 			this.calculate(delta, lastDelta);
-			calcCount++;
-			if (calcCount == Settings.msPerRender)
+			if (this.game.gameRunning == true)
 			{
-				this.render(delta);
-				calcCount = 0;
+				calcCount++;
+				if (calcCount == Settings.msPerRender)
+				{
+					this.render(delta);
+					calcCount = 0;
+				}
 			}
 			
 			try

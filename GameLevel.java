@@ -1,49 +1,80 @@
-//import org.json.JSONObject;
-
+import java.util.*;
+//import java.util.Scanner;
 
 class GameLevel
 {
 	
-	// Perhaps loading and saving game states can also be done in here.
-	// Basically to save, iterate through each object in object pool, dump the parameters into JSON/XML.
-	// To load, simply read through 
+	// Loading and saving game states can also be done in here (possibly as an object, class defined elsewhere).
+	// Basically to save, iterate through each object in object pool, dump the parameters into JSON.
 	
-	//public JSONObject jsonObject;
+	private String levelsJSON;
+	private BubblesJSONObject levelsObject;
+	private BubblesJSONObject currentLevelObject;
 	
+	private BubblesJSONObject bubblesJSONObject;
+	private BubblesJSONParser bubblesJSONParser;
 	public int currentLevel;
 	
 	public GameLevel ()
 	{
+		Scanner fileScanner = new Scanner(this.getClass().getResourceAsStream("/"+"levels"));
+		while (fileScanner.hasNext()) // Iterates through the lines of the file.
+		{
+			this.levelsJSON += fileScanner.nextLine();
+		}
+		BubblesJSONParser bubblesJSONParser = new BubblesJSONParser(this.levelsJSON);
+		this.levelsObject = bubblesJSONParser.parseString();
+		//System.out.println(this.levelsObject.toFormattedString()); // Debug
 		this.currentLevel = 0;
-		// Maybe use some sort of JSON/XML carrier for the game level objects.
 	}
 	
 	public void setCurrentLevel (int levelNumber)
 	{
 		this.currentLevel = levelNumber;
+		this.currentLevelObject = this.levelsObject.getObject("LEVELS").getObject(levelNumber); // Revisit. Define the key constants?
+		//System.out.println(this.currentLevelObject.toFormattedString()); // Debug
+	}
+	
+	private boolean isObjectValidForIteration (String keyType)
+	{
+		if (this.currentLevelObject.doesKeyExist(keyType) == true && this.currentLevelObject.getObject(keyType).isObjectEmpty() == false)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	private Set<Object> getCurrentLevelObjectKeySet (String keyType)
+	{
+		return this.currentLevelObject.getObject(keyType).getKeySet();
+	}
+	
+	private Object getObjectParameter (String type, Object key, String parameter)
+	{
+		return (this.currentLevelObject.getObject(type).getObject(key).get(parameter));
 	}
 	
 	public void loadPortals (Portal[] portals)
 	{
-		switch (this.currentLevel)
+		String type = "PORTALS";
+		if (this.isObjectValidForIteration(type))
 		{
-			case 0:
-				break;
-			case 1:
-				portals[0] = new Portal(150, 100, 10, 180, 140, 10);
-				break;
+			for (Object x : (this.getCurrentLevelObjectKeySet(type)))
+			{
+				portals[(Integer)x] = new Portal((Integer)getObjectParameter(type, x, "entranceX"), (Integer)getObjectParameter(type, x, "entranceY"), (Integer)getObjectParameter(type, x, "entranceW"), (Integer)getObjectParameter(type, x, "exitX"), (Integer)getObjectParameter(type, x, "exitY"), (Integer)getObjectParameter(type, x, "exitW"));
+			}
 		}
 	}
 	public void loadBlocks (Block[] blocks)
 	{
-		switch (this.currentLevel)
+		String type = "BLOCKS";
+		if (this.isObjectValidForIteration(type))
 		{
-			case 0:
-				break;
-			case 1:
-				blocks[0] = new Block(250, 200, 100, 10);
-				blocks[1] = new Block(75, 100, 50, 10);
-				break;
+			for (Object x : (this.getCurrentLevelObjectKeySet(type)))
+			{
+				//System.out.println((Integer)(getObjectParameter(type, x, "x"))); // Debug
+				blocks[(Integer)x] = new Block((Integer)getObjectParameter(type, x, "x"), (Integer)getObjectParameter(type, x, "y"), (Integer)getObjectParameter(type, x, "w"), (Integer)getObjectParameter(type, x, "h"));
+			}
 		}
 	}
 	public void loadSlopedBlocks (SlopedBlock[] slopedBlocks)
