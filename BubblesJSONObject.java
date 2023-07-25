@@ -203,7 +203,7 @@ class BubblesJSONObject
 				}
 				else if (value instanceof Boolean)
 				{
-					Boolean booleanInstance = new Boolean(true);
+					Boolean booleanInstance = Boolean.valueOf(true);
 					output += booleanInstance.equals(value) ? "true" : false;
 					//output += (boolean)value ? "true" : "false";
 				}
@@ -248,7 +248,7 @@ class BubblesJSONObject
 				}
 				else if (entry.getValue() instanceof Boolean)
 				{
-					Boolean booleanInstance = new Boolean(true);
+					Boolean booleanInstance = Boolean.valueOf(true);
 					output += booleanInstance.equals(entry.getValue()) ? "true" : "false";
 					//output += (boolean)(entry.getValue()) ? "true" : "false";
 				}
