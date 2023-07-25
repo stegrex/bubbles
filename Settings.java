@@ -8,13 +8,15 @@ class Settings
 	//public static String gameFile = "testsave.wad";
 	
 	// Environment settings
+	/*
 	public static int canvasX = 320; // Horizontal size of window. Default 320.
 	public static int canvasY = 480; // Vertical size of window. Default 480.
+	//*/
 	// For fun.
-	/*
+	//*
 	public static int canvasX = 1440; // Horizontal size of window. Default 320.
 	public static int canvasY = 900; // Vertical size of window. Default 480.
-	*/
+	//*/
 	
 	// Game settings
 	
@@ -41,6 +43,6 @@ class Settings
 	public static int reticleSize = 2;
 	public static boolean showReticleLaser = true;
 	public enum ReticleColor {GREEN, RED};
-	public static ReticleColor reticleColor = ReticleColor.RED;
+	public static ReticleColor reticleColor = ReticleColor.GREEN;
 	
 }
